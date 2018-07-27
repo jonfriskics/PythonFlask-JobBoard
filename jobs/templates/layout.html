@@ -5,7 +5,16 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-  {% block content %}
-  {% endblock %}
+  <div class="grid-container">
+    <div class="header">
+    </div>
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <div class="footer">
+    </div>
+  </div>
+
 </body>
 </html>

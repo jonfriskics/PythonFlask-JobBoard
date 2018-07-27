@@ -1,0 +1,17 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.grid-container {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "header header header header" "content content content content" "footer footer footer footer";
+}
+
+.header { grid-area: header; }
+
+.content { grid-area: content; }
+
+.footer { grid-area: footer; }

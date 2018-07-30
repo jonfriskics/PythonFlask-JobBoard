@@ -2,11 +2,7 @@
 
 {% block content %}
   <div>
-    <h3>
-      <a href="{{ url_for('employer', employer_id=employer['id']) }}">
-        {{ employer['name'] }}
-      </a>
-    </h3>
+    <h1>{{ employer['name'] }}</h1>
     <div class="description">
       <p>{{ employer['description'] }}</p>
     </div>

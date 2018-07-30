@@ -37,25 +37,25 @@ def job(job_id):
     job = query_db(
         'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name'
         ' FROM job JOIN employer ON employer.id = job.employer_id'
-        ' WHERE job.id=?', job_id, True)
+        ' WHERE job.id=?', [job_id], True)
     return render_template('job.html', job=job)
 
 @app.route('/employer/<employer_id>')
 def employer(employer_id):
-    employer = query_db('SELECT * FROM employer WHERE id = ?', employer_id, True)
+    employer = query_db('SELECT * FROM employer WHERE id=?', [employer_id], True)
     jobs = query_db(
-        'SELECT id, title, description, salary'
+        'SELECT job.id, job.title, job.description, job.salary'
         ' FROM job JOIN employer ON employer.id = job.employer_id'
-        ' WHERE employer.id = ?', employer_id)
+        ' WHERE employer.id=?', [employer_id])
     reviews = query_db(
         'SELECT review, rating, title, date, status'
         ' FROM review JOIN employer ON employer.id = review.employer_id'
-        ' WHERE employer.id = ?', employer_id)
+        ' WHERE employer.id =?', [employer_id])
     return render_template('employer.html', employer=employer, jobs=jobs, reviews=reviews)
 
 @app.route('/user/<user_id>')
 def user(user_id):
-    user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
+    user = query_db('SELECT * FROM user WHERE id=?', user_id, True)
     return render_template('user.html', user=user)
 
 @app.route('/admin')

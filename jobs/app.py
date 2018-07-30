@@ -16,10 +16,7 @@ def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
-    if rv:
-        return rv[0] if one else rv
-    else:
-        return None
+    return (rv[0] if rv else None) if one else rv
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -27,56 +24,39 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-# Job
-# Title
-# Description
-# Salary
-# Tag
-
 @app.route('/')
 @app.route('/jobs')
 def jobs():
-    jobs = query_db('select * from jobs')
-    for job in jobs:
-        print(job)
-    return render_template('index.html')
-
+    jobs = query_db(
+        'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name'
+        ' FROM job JOIN employer ON employer.id = job.employer_id')
+    return render_template('index.html', jobs=jobs)
 
 @app.route('/job/<job_id>')
 def job(job_id):
-    return render_template('job.html')
-
-# Employer
-# name
-# description
-# address
-
-# Review
-# rating
-# title
-# date
-# status (current/former)
+    job = query_db(
+        'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name'
+        ' FROM job JOIN employer ON employer.id = job.employer_id'
+        ' WHERE job.id=?', job_id, True)
+    return render_template('job.html', job=job)
 
 @app.route('/employer/<employer_id>')
 def employer(employer_id):
-    return render_template('employer.html')
-
-# User
-# username
-# password
-# name
-# email
-# phone
-# role_id
-
-# Role
-# type
-
+    employer = query_db('SELECT * FROM employer WHERE id = ?', employer_id, True)
+    jobs = query_db(
+        'SELECT id, title, description, salary'
+        ' FROM job JOIN employer ON employer.id = job.employer_id'
+        ' WHERE employer.id = ?', employer_id)
+    reviews = query_db(
+        'SELECT review, rating, title, date, status'
+        ' FROM review JOIN employer ON employer.id = review.employer_id'
+        ' WHERE employer.id = ?', employer_id)
+    return render_template('employer.html', employer=employer, jobs=jobs, reviews=reviews)
 
 @app.route('/user/<user_id>')
 def user(user_id):
-    return render_template('user.html')
-
+    user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
+    return render_template('user.html', user=user)
 
 @app.route('/admin')
 def admin():

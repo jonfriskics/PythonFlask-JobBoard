@@ -1,5 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Index</h1>
+  <h1>Jobs</h1>
+  {% for job in jobs %}
+    <div>
+      <h3>
+        <a href="{{ url_for('job', job_id=job['id']) }}">
+          {{ job['title'] }}
+        </a>
+      </h3>
+      <div class="description">
+        <h4>
+          <a href="{{ url_for('employer', employer_id=job['employer_id']) }}">
+            {{ job['employer_name'] }}
+          </a> - ${{ job['salary'] }}
+        </h4>
+        <p>{{ job['description'] }}</p>
+      </div>
+    </div>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
 {% endblock %}

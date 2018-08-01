@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <title>Job Board</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 </head>
 <body>
-  <div class="grid-container">
-    <div class="header">
-    </div>
+
+  <div class="container">
     <div class="content">
       {% block content %}
       {% endblock %}
-    </div>
-    <div class="footer">
     </div>
   </div>
 

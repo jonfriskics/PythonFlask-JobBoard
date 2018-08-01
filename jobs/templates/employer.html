@@ -7,6 +7,7 @@
       <p>{{ employer['description'] }}</p>
     </div>
   </div>
+  <h2>Jobs</h2>
   {% for job in jobs %}
     <div>
       <h3>
@@ -17,6 +18,22 @@
       <div class="description">
         <h4>${{ job['salary'] }}</h4>
         <p>{{ job['description'] }}</p>
+      </div>
+    </div>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+  <h2>Reviews</h2>
+  {% for review in reviews %}
+    <div>
+      <h3>{{ review['title'] }}</h3>
+      <div class="review">
+        <p>{{ review['date'] }}</p>
+        {% for _ in range(1, review['rating']): %}
+          <span class="fa fa-star checked"></span>
+        {% endfor %}
+        <p>{{ review['review'] }}</p>
       </div>
     </div>
     {% if not loop.last %}

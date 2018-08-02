@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 from flask import g, Flask, flash, render_template, request, redirect, url_for
 
 app = Flask(__name__)
@@ -59,7 +60,7 @@ def review(employer_id):
         review = request.form['review']
         rating = request.form['rating']
         title = request.form['title']
-        date = request.form['date']
+        date = datetime.datetime.now().strftime("%m/%d/%Y")
         status = request.form['status']
         error = None
 
@@ -76,13 +77,13 @@ def review(employer_id):
             db = get_db()
             db.execute(
                 'INSERT INTO review (review, rating, title, date, status, employer_id)'
-                ' VALUES (?, ?, ?, ?)',
+                ' VALUES (?, ?, ?, ?, ?, ?)',
                 (review, rating, title, date, status, employer_id)
             )
             db.commit()
             return redirect(url_for('/employer/', employer_id=employer_id))
 
-    return render_template('review.html')
+    return render_template('review.html', employer_id=employer_id)
 
 @app.route('/user/<user_id>')
 def user(user_id):

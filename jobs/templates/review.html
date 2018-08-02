@@ -7,7 +7,7 @@
     <div class="field">
       <label class="label">Job Title</label>
       <div class="control">
-        <input class="input" type="text" name="title" id="title" value="{{ request.form['title'] }}" required>
+        <input class="input" type="text" name="title" id="title" required>
       </div>
     </div>
 
@@ -29,12 +29,12 @@
     <div class="field">
       <label class="label">Review</label>
       <div class="control">
-        <textarea class="textarea" name="review" id="review">{{ request.form['review'] }}</textarea>
+        <textarea class="textarea" name="review" id="review"></textarea>
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Status</label>
+      <label class="label">Employment Status</label>
       <div class="control">
         <div class="select">
           <select name="status" id="status">

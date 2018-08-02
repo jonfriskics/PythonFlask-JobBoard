@@ -1,13 +1,7 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
 {% block content %}
-  <div>
-    <h3>{{ job['title'] }}</h3>
-    <div class="description">
-      <h4><a href="{{ url_for('employer', employer_id=job['employer_id']) }}">
-            {{ job['employer_name'] }}
-          </a> - ${{ job['salary'] }}</h4>
-      <p>{{ job['description'] }}</p>
-    </div>
-  </div>
+    {% with job=job %}
+      {% include "_job.html" %}
+    {% endwith %}
 {% endblock %}

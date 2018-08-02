@@ -1,7 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <h1>Jobs</h1>
+  <div class="columns">
+    <div class="column">
+      <h1>Jobs</h1>
+    </div>
+    <div class="column is-one-fifth">
+      <a href="/admin/create" class="button is-info is-outlined">New Job</a>
+    </div>
+  </div>
+  
   {% for job in jobs %}
     {% with job=job %}
       {% include "_job.html" %}

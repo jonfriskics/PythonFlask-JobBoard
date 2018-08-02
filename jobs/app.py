@@ -1,5 +1,5 @@
 import sqlite3
-from flask import g, Flask, render_template
+from flask import g, Flask, flash, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -58,6 +58,69 @@ def user(user_id):
     user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
     return render_template('user.html', user=user)
 
+@app.route('/employer/<employer_id>/review')
+def user(employer_id):
+    if request.method == 'POST':
+        review = request.form['review']
+        rating = request.form['rating']
+        title = request.form['title']
+        date = request.form['date']
+        status = request.form['status']
+        error = None
+
+        if not review:
+            error = 'Review is required.'
+        elif not rating: 
+            error = 'Rating is required.'
+        elif not title: 
+            error = 'Title is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO review (review, rating, title, date, status, employer_id)'
+                ' VALUES (?, ?, ?, ?)',
+                (review, rating, title, date, status, employer_id)
+            )
+            db.commit()
+            return redirect(url_for('/employer/', employer_id=employer_id))
+
+    return render_template('review.html')
+
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    jobs = query_db(
+        'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name'
+        ' FROM job JOIN employer ON employer.id = job.employer_id')
+    return render_template('admin/index.html', jobs=jobs)
+
+@app.route('/admin/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        salary = request.form['salary']
+        employer_id = request.form['employer_id']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+        elif not employer_id: 
+            error = 'Employer is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO job (title, description, salary, employer_id)'
+                ' VALUES (?, ?, ?, ?)',
+                (title, description, salary, employer_id)
+            )
+            db.commit()
+            return redirect(url_for('admin'))
+
+    employers = query_db('SELECT id, name FROM employer')
+    return render_template('admin/create.html', employers=employers)

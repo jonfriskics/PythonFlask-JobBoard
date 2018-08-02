@@ -32,4 +32,9 @@
       <hr>
     {% endif %}
   {% endfor %}
+  <div class="columns">
+    <div class="column is-one-fifth">
+      <a href="{{ url_for('review', employer_id=employer['id']) }}" class="button is-info is-outlined">Create Review</a>
+    </div>
+  </div>
 {% endblock %}

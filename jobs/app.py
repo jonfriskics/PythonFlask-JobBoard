@@ -53,13 +53,8 @@ def employer(employer_id):
         ' WHERE employer.id = ?', [employer_id])
     return render_template('employer.html', employer=employer, jobs=jobs, reviews=reviews)
 
-@app.route('/user/<user_id>')
-def user(user_id):
-    user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
-    return render_template('user.html', user=user)
-
 @app.route('/employer/<employer_id>/review')
-def user(employer_id):
+def review(employer_id):
     if request.method == 'POST':
         review = request.form['review']
         rating = request.form['rating']
@@ -88,6 +83,11 @@ def user(employer_id):
             return redirect(url_for('/employer/', employer_id=employer_id))
 
     return render_template('review.html')
+
+@app.route('/user/<user_id>')
+def user(user_id):
+    user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
+    return render_template('user.html', user=user)
 
 @app.route('/admin')
 def admin():

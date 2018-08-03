@@ -46,7 +46,7 @@ Every time you want to check your work locally you can type that command, and it
 
 You can preview your work by running `flask run` in the root of your fork and then visit`http://localhost:5000` in your browser.
 
-# Module 01 -
+# Module 01 - Routing and Templates
 
 ## 1.1 -
 
@@ -80,7 +80,7 @@ You can preview your work by running `flask run` in the root of your fork and th
 
 @pytest.mark.
 
-# Module 02 -
+# Module 02 - 
 
 ## 2.1 -
 

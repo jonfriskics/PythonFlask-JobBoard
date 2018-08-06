@@ -85,11 +85,6 @@ def review(employer_id):
 
     return render_template('review.html', employer_id=employer_id)
 
-@app.route('/user/<user_id>')
-def user(user_id):
-    user = query_db('SELECT * FROM user WHERE id = ?', user_id, True)
-    return render_template('user.html', user=user)
-
 @app.route('/admin')
 def admin():
     jobs = query_db(

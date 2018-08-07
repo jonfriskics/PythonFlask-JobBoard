@@ -44,83 +44,80 @@ Every time you want to check your work locally you can type that command, and it
 
 ## Previewing Your Work
 
-You can preview your work by running `flask run` in the root of your fork and then visit`http://localhost:5000` in your browser.
+You can preview your work by running `flask run` in the root of your fork and then visit `http://localhost:5000` in your browser.
 
-# Module 01 - Routing and Templates
+# Module 01 - Routing
 
-## 1.1 -
+## 1.1 - Import Flask
 
-@pytest.mark.
+@pytest.mark.app-import-flask In order to create a flask application Import `Flask` and `render_template` from `flask`.
 
-## 1.2 -
+## 1.2 - Create a Flask Application
 
-@pytest.mark.
+@pytest.mark.app-create-flask-app Create an instance of the Flask class called `app`. Pass in the special variable `__name__`.
 
-## 1.3 -
+## 1.3 - Templates Folder
 
-@pytest.mark.
+@pytest.mark.templates-folder Create a folder called `templates` in the `jobs` directory.
 
-## 1.4 -
+## 1.4 - Create Index Template
 
-@pytest.mark.
+@pytest.mark.index-template In the root of the `templates` folder, create a file called `index.html`. 
 
-## 1.5 -
+## 1.5 - Create the Index Route
 
-@pytest.mark.
+@pytest.mark.app-create-index-route We will display all jobs on the index page. To start we will create a basic route that displays the contents of the index template. Create a function called `jobs` and attach a `route()` decorator with the URL of `/`. Add an additional path of `/jobs`. In the body of the function return a call to the `render_template()` passing the `index.html` template.
 
-## 1.6 -
+## 1.5 - Create Employer and Job Templates
 
-@pytest.mark.
+@pytest.mark.detail-templates In the root of the `templates` folder, create two files one called `employer.html` and the other called `job.html`.
 
-## 1.7 -
+## 1.6 -Create Detail Routes
 
-@pytest.mark.
+@pytest.mark.app-create-detail-routes We need routes for individual employers and jobs. Create two functions one called `employer` and the other called `job`.  Add route decorators to bind these functions with the appropriate URLs: 
+- `/employer` to the `employer` function
+- `/job` to the `job `function.
 
-## 1.8 -
+In the body of each function return a call to `render_template()` passing the appropriate template.
 
-@pytest.mark.
+# Module 02 - Templates
 
-# Module 02 - 
+## 2.1 - Create Layout Template
 
-## 2.1 -
+@pytest.mark.layout-template We want each template to have a  consistent look and feel. We can create a base layout that each template can extend. First create a new file called `layout.html` in the root of the `templates` folder. Copy the basic structure of the file from the file called `templates.html`.
 
-@pytest.mark.
+## 2.2 - Add Styles
 
-## 2.2 -
+@pytest.mark.add-styles The app will be styled with bulma (bulma.io). Add three link tags to the head of `layout.html`. For the first `href` use mustache syntax `{{}}` and the `url_for()` function to link in the file `css/bulma.css` from the `static` folder. For the second add the file `css/app.css` using the same method. The last link tag should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`.
 
-@pytest.mark.
+## 2.3 - Create Template Files
 
-## 2.3 -
+@pytest.mark.create-template-files We need to create some additional template files. In the `templates` folder create the following files:
+- `_job.html`
+- `job.html`
+- `employer.html`
+- `review.html`
 
-@pytest.mark.
+Next create a new folder called `admin` in the `templates` folder, then create the following files:
+- `index.html`
+- `create.html`
 
-## 2.4 -
+## 2.4 - Template Files HTML
+@pytest.mark.template-files-html Locate the `templates.html` file in the the root of the project. To prevent having to write all HTML from scratch the HTML structure of several of the template files is given here. Each block has a comment that describes what HTML file, the HTML block, needs to be copied too. Copy each block to the correct file.
 
-@pytest.mark.
+## 2.5 - Extend Base Layout
 
-## 2.5 -
+@pytest.mark.extend-base-layout Each of the files list below needs to extend the base layout. This can be done by adding an `extends` directive with `{% %}` template syntax to the top of each file.
 
-@pytest.mark.
+- `job.html`
+- `employer.html`
+- `review.html`
+- `admin/index.html`
+- `admin/create.html`
 
-## 2.6 -
+## 2.6 - Navigation
 
-@pytest.mark.
-
-## 2.7 -
-
-@pytest.mark.
-
-## 2.8 -
-
-@pytest.mark.
-
-## 2.9 -
-
-@pytest.mark.
-
-## 2.10 -
-
-@pytest.mark.
+@pytest.mark.navigation We want to allow the user to navigate to the admin from the front page. In the `index.html` template file create a link to the main admin page by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`. In the `admin/index.html` template file create a link to add a new job by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`.
 
 # Module 03 -
 

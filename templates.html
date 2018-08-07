@@ -1,3 +1,24 @@
+<!-- templates/layout.html -->
+<!doctype html>
+<html>
+  <head>
+    <title>Job Board</title>
+
+
+
+  </head>
+  <body>
+
+    <div class="container top">
+      <div class="content">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+
+  </body>
+</html>
+
 <!-- templates/index.html -->
 {% block content %}
   <div class="columns">
@@ -6,8 +27,9 @@
     </div>
     <div class="column is-one-fifth">
 
-
     </div>
+    
+    
   </div>
 {% endblock %}
 
@@ -17,7 +39,7 @@
 
 
   <h2>Reviews</h2>
-  {% for review in reviews %}
+  {%  %}
     <div class="box">
       <article class="media">
         <div class="media-left">
@@ -32,7 +54,7 @@
         </div>
       </article>
     </div>
-  {% endfor %}
+  {%  %}
   <div class="columns">
     <div class="column">
       <a class="button is-info is-pulled-right">Create Review</a>

@@ -4,7 +4,7 @@ from flask import g, Flask, flash, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-DATABASE = 'jobs/db.sqlite3'
+DATABASE = 'db/jobs.sqlite'
 
 def get_db():
     db = getattr(g, '_database', None)

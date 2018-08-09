@@ -50,11 +50,11 @@ You can preview your work by running `flask run` in the root of your fork and th
 
 ## 1.1 - Import Flask
 
-@pytest.mark.app-import-flask In order to create a flask application Import `Flask` and `render_template` from `flask`.
+@pytest.mark.app-import-flask In order to create a flask application Import `Flask` and `render_template` from `flask` in `jobs/app.py`.
 
 ## 1.2 - Create a Flask Application
 
-@pytest.mark.app-create-flask-app Create an instance of the Flask class called `app`. Pass in the special variable `__name__`.
+@pytest.mark.app-create-flask-app In `app.py` create an instance of the `Flask` class called `app`. Pass in the special variable `__name__` to the `Flask `constructor.
 
 ## 1.3 - Templates Folder
 
@@ -66,7 +66,7 @@ You can preview your work by running `flask run` in the root of your fork and th
 
 ## 1.5 - Create the Index Route
 
-@pytest.mark.app-create-index-route We will display all jobs on the index page. To start we will create a basic route that displays the contents of the index template. Create a function called `jobs` and attach a `route()` decorator with the URL of `/`. Add an additional path of `/jobs`. In the body of the function return a call to the `render_template()` passing the `index.html` template.
+@pytest.mark.app-create-index-route We will display all jobs on the index page. To start in `app.py` we will create a basic route that displays the contents of the index template. Create a function called `jobs` and attach a `route()` decorator with the URL of `/`. Add an additional path of `/jobs`. In the body of the function return a call to the `render_template()` passing in the `index.html` template.
 
 ## 1.5 - Create Employer and Job Templates
 
@@ -74,7 +74,7 @@ You can preview your work by running `flask run` in the root of your fork and th
 
 ## 1.6 -Create Detail Routes
 
-@pytest.mark.app-create-detail-routes We need routes for individual employers and jobs. Create two functions one called `employer` and the other called `job`.  Add route decorators to bind these functions with the appropriate URLs: 
+@pytest.mark.app-create-detail-routes We need routes for individual employers and jobs. In `app.py` create two functions one called `employer` and the other called `job`.  Add route decorators to bind these functions with the appropriate URLs: 
 - `/employer` to the `employer` function
 - `/job` to the `job `function.
 
@@ -88,7 +88,7 @@ In the body of each function return a call to `render_template()` passing the ap
 
 ## 2.2 - Add Styles
 
-@pytest.mark.add-styles The app will be styled with bulma (bulma.io). Add three link tags to the head of `layout.html`. For the first `href` use mustache syntax `{{}}` and the `url_for()` function to link in the file `css/bulma.css` from the `static` folder. For the second add the file `css/app.css` using the same method. The last link tag should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`.
+@pytest.mark.add-styles The app will be styled with bulma (bulma.io). Add three link tags to the head of `layout.html`. For the first `href` use the mustache template markup `{{}}` and the `url_for()` function to link in the file `css/bulma.css` from the `static` folder. For the second add the file `css/app.css` using the same method. The last link tag should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`.
 
 ## 2.3 - Create Template Files
 
@@ -117,148 +117,185 @@ Next create a new folder called `admin` in the `templates` folder, then create t
 
 ## 2.6 - Navigation
 
-@pytest.mark.navigation We want to allow the user to navigate to the admin from the front page. In the `index.html` template file create a link to the main admin page by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`. In the `admin/index.html` template file create a link to add a new job by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`.
+@pytest.mark.navigation We want to allow the user to navigate to the admin from the front page. In the `index.html` template file create a link to the main admin page by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`. In the admin we allow the user to create a new job. In the `admin/index.html` template file create a link to the new job form by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin/create` and the classes `button`, `is-info`, and `is-pulled-right`.
 
-# Module 03 -
+# Module 03 - Database Access
 
-## 3.1 -
+## 3.1 - Database Path
 
-@pytest.mark.
+@pytest.mark.app-database-path In `app.py` and below the import statements create a constant called `DATABASE` that contains the path to the already created database stored in `db/jobs.sqlite`.
 
-## 3.2 -
+## 3.2 - Import Global Namespace
 
-@pytest.mark.
+@pytest.mark.app-import-global-namespace To provide access to the database through out the application we are going to create a function that stores a reference to the database connection in the application_context. Before we can do that in the `from flask` statement add `g` to the import. 
 
-## 3.3 -
+## 3.3 - Global Database Access
 
-@pytest.mark.
+@pytest.mark.app-global-database-access At the top of `app.py` create a function called `get_db`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn't exist set the default to `None`. Assign the return value of the `getattr` function to`db`. Next test if `db` is `None` if it is set `db` to `g._database` and `sqlite3.connect(DATABASE)`. To make accessing data easier set the row_factory of `db` to sqlite3.row. This will set all rows to named tuples. Return the `db` variable.
 
-## 3.4 -
+## 3.4 - Querying the Database 
 
-@pytest.mark.
+@pytest.mark.app-querying-the-database Lets create a function below the `get_db` function to make it easier to query the database. Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
 
-## 3.5 -
+## 3.5 - Close the Connection
 
-@pytest.mark.
+@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`. Add a parameter called `exception`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn't exist set the default to `None`. Assign the return value of the `getattr` function to`db`. If `db` is not `None` `close` the `db`. To ensure this function is called when the `app_context` is destroyed use the ``@app.teardown_appcontext` decorator.
 
-## 3.6 -
+# Module 04 - Display Jobs and Employers
 
-@pytest.mark.
+## 4.1 - All Jobs
 
-## 3.7 -
+@pytest.mark.app-jobs In `app.py` locate the `jobs` function. Above the `render_template` function call, call the `query_db`function. Pass in the SQL statement: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id'`. Assign the results of the call to a variable called `jobs`. In the `render_template` function, pass a keyword argument of `jobs=jobs`.
 
-@pytest.mark.
+## 4.2 - Individual Job Details
 
-## 3.8 -
+@pytest.mark.app-individual-job-details To bring back just one job from the database we are going to use a where clause. In the where clause we will need a `job_id`. We are going to get this from the URL. In `app.py` locate the `job` function. In the route decorator for the function after the url path `/job` add `/<job_id>`.  To use this `job_id` we also need to pass it to the job function add `job_id` to the parameter list of the `job` function. Above the `render_template` function, call the `query_db` function and assign the results of the call to a `job` variable. Pass the function three arguments: 
+- SQL Query: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id WHERE job.id = ?'`
+- List Literal: [job_id]
+- True: This will bring back only one result.
 
-@pytest.mark.
+In the `render_template` function, pass a keyword argument of `job=job`
 
-## 3.9 -
+## 4.3 - Individual Employer Details
 
-@pytest.mark.
+@pytest.mark.app-individual-employer-details Similar to the `job` function the employer route will only need the details of one employer. Locate the `employer` function in `app.py`. Again we need the unique id of an employer and will receive this from the URL. Add `/<employer_id>` in the route decorator after `/employer`. So that the `employer` function has access to this value add `employer_id`to the parameter list. Make a call to `query_db` and assign tne return value to `employer`. Pass in the arguments:
+- SQL Query: 'SELECT * FROM employer WHERE id=?'
+- List Literal: [employer_id]
+- True: This will bring back only one result.
 
-## 3.10 -
+In the `render_template` function, pass a keyword argument of `employer=employer`
 
-@pytest.mark.
+## 4.4 - All Employer Jobs
 
-# Module 04 -
+@pytest.mark.app-all-employer-jobs On the employer details page we want to display all of the employers jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
+- SQL Query: `'SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?'`
+- List Literal: [employer_id]
 
-## 4.1 -
+In the `render_template` function, add another keyword argument of `jobs=jobs`
 
-@pytest.mark.
+## 4.5 - Job Card
 
-## 4.2 -
+@pytest.mark.job-card Open the file `templates/_jobs.html` find the `<p>` tag with a class of `card-header-title`. Add an `<a>` tag with an `href` of `{{ url_for('job', job_id=job['id']) }}`. The content should be `{{ job['title'] }}`. Next find the `<div>` with a class of `content`. To this tag add a `<p>` tag and in this tag add the following: 
+- `<a>` tag with an `href` of `{{ url_for('employer', employer_id=job['employer_id']) }}`. The content should be `{{ job['employer_name'] }}`. Add line break.
+- ${{ job['salary'] }}. Add line break.
+- {{ job['description'] }}
 
-@pytest.mark.
+## 4.6 -Display All Jobs
 
-## 4.3 -
+@pytest.mark.display-all-jobs Open the file `templates/index.html` above the `{% endblock %}` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop.. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  Too this `<div>` add the following template code: 
 
-@pytest.mark.
+```
+{% with job=job %}
+  {% include "_job.html" %}
+{% endwith %}
+```
 
-## 4.4 -
+## 4.7 - Display Individual Job Details
 
-@pytest.mark.
+@pytest.mark.display-individual-job-details In `templates/job.html` add a template block called `content` using the `{% %}` template markup. In the template block add the following template code: 
 
-## 4.5 -
+```
+{% with job=job %}
+  {% include "_job.html" %}
+{% endwith %}
+```
 
-@pytest.mark.
+## 4.8 - Display Individual Employer Details
 
-## 4.6 -
+@pytest.mark.display-individual-employer-details Open `templates/employer.html` as the first thing in the template block add the following HTML:
 
-@pytest.mark.
+- `<div>`
+- Nested in the `<div>` add an `<h1>` with the content {{ employer['name'] }}
+- Nested in the `<div>` add a`<div>` with a class of `description`
+- Nested in the description `<div>`add a`<p>` with the content {{ employer['description'] }}
+  
+## 4.9 -Display All Employer Jobs
 
-## 4.7 -
+@pytest.mark.display-all-employer-jobs Open the file `templates/employer.html` below the jobs `<h2>` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop.. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  To the `<div>` add the following template code: 
 
-@pytest.mark.
+```
+{% with job=job %}
+  {% include "_job.html" %}
+{% endwith %}
 
-## 4.8 -
+# Module 05 - Employer Reviews
 
-@pytest.mark.
+## 5.1 - Review Route
 
-## 4.9 -
+@pytest.mark.app-review-route In `app.py` below the `employer` function create a new function called review. Add `employer_id` to the parameter list. Add a route decorator will a URL pattern of `/employer/<employer_id>/review` as well as a keyword argument `methods` set to a tuple with two values: 'GET' and 'POST'.
+In the body of the function return the render_template function passing in `review.html`  template and a keyword argument of `employer_id=employer_id`.
 
-@pytest.mark.
+## 5.2 - Check for POST method
 
-## 4.10 -
+@pytest.mark.app-review-check-for-post-method In the body of the `review` above the render_template function call, create an `if` statement that checks if the request method is 'POST'. In the `if` statement create four variables `review`, `rating`, `title`, and `status`. Set them equal to their respective `request.form` values i.e. `request.form['review']`. Create two more variables  `error` (set to `None`) and `date` (set to `datetime.datetime.now().strftime("%m/%d/%Y")`) . For `datetime` add an `import datetime` statement to the top of `app.py`. 
 
-@pytest.mark.
+## 5.3 - Check for Values
 
-## 5.1 -
+@pytest.mark.app-review-check-for-values In the body of the post `if` statement in the review function in `app.py`, below the variables check if there is a value for `review`, `rating`,  and `title`. If any of these are empty set `error` to  an appropriate error message i.e. 'Review field is required.'
 
-@pytest.mark.
+## 5.4 - Check for Error
 
-## 5.2 -
+@pytest.mark.app-review-check-for-error Still in the review function below the value checks add an `if` statement that checks if `error` is `None`. If there are no errors we are going to add the form values to the database. To do this we need to connect to the database and commit some changes. Follow these steps: 
+- Set a `db` variable to a call to `get_db()`
+- `execute` the following SQL statment: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
+- `commit` the changes to the database.
+- return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**
 
-@pytest.mark.
+If there are errors (`else` statement) `flash` the error. **Hint: `else` statement; use `flash()` (imported from flask)**
 
-## 5.3 -
+## 5.5 - Review Form Cancel
 
-@pytest.mark.
+@pytest.mark.review-form-cancel Open `templates/review.html` and find the cancel anchor tag. Add an `href` attribute with a value of ``{{ url_for('employer', employer_id=employer_id) }}`.
 
-## 5.4 -
+## 5.6 - Individual Employer Reviews
 
-@pytest.mark.
+@pytest.mark.app-individual-employer-reviews Now that employer reviews can be created, lets display them on the individual employer pages. Switch back to `app.py` and find the `employer` function below the jobs query add an new query to get all review for the employer. Make a call to `query_db` and assign tne return value to `reviews`. Pass in the arguments:
+- SQL Query: 'SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?'
+- List Literal: [employer_id]
 
-## 5.5 -
+In the `render_template` function, add another keyword argument of `reviews=reviews`
 
-@pytest.mark.
+## 5.7 - Display Individual Employer Reviews
 
-## 5.6 -
+@pytest.mark.display-individual-employer-reviews Open `templates/employer.html` find the review `<h2>` in the empty `{% %}` template tag add a `for in` loop to loop through all `reviews`. Add the `endfor` directive to the second empty `{% %}` template tag. In the `<div>` with a class of `media-left` add this for loop:
+```
+{% for _ in range(1, review['rating']): %}
+  <span class="fa fa-star checked"></span>
+{% endfor %}
+```
+In the `content <div>` add a paragraph tag. In the paragraph display the details of a review:
+- `title`
+- `status`
+- `date`
+- `review`
 
-@pytest.mark.
+For the `Create Review` button to work add an `href` that points to the individual employer page. 
 
-## 5.7 -
+# Module 06 - Add Jobs
 
-@pytest.mark.
+## 6.1 - Admin Route
 
-## 5.8 -
+@pytest.mark.app-admin-route We will display all jobs on the admin page. To start, in `app.py` create a basic route that displays the contents of the admin index template. Create a function called `admin` and attach a `route()` decorator with the URL of `/admin`. In the body of the function use the `query_db` function to get all jobs from the database. The SQL can be found in other routes. Next, return a call to the `render_template()` passing in the `admin/index.html` template and the correct keyword arguments. 
 
-@pytest.mark.
+## 6.2 - Admin Create Job Route
 
-## 5.9 -
+@pytest.mark.app-admin-create-job-route In `app.py` create a route at the path `/admin/create` that accepts the methods 'GET' and 'POST'. 
 
-@pytest.mark.
+## 6.3 - Check for POST method
 
-## 5.10 -
+@pytest.mark.app-admin-check-for-post-method In the body of your route check if data has been posted then create four variables `title`, `description`, `salary`, and `employer_id`. Set them equal to their respective `request.form` values. Create an `error` variable set to `None`.
 
-@pytest.mark.
+## 6.3 - Check for Values
 
-## 5.11 -
+@pytest.mark.app-admin-check-for-values In the body of the post `if` statement in your route function in `app.py`, below the variables, check if there is a value for `title`, and `employer_id`. If either is empty set `error` to  an appropriate error message i.e. 'Title field is required.'
 
-@pytest.mark.
+## 6.4 - Check for Error
 
-## 5.12 -
+@pytest.mark.app-admin-check-for-error Still in your route function below the value checks add an `if` statement that checks if `error` is `None`. If there are no errors we are going to add the form values to the database. Connect to the database and commit the changes.
+**Hint: The SQL is `'INSERT INTO job (title, description, salary, employer_id) VALUES (?, ?, ?, ?)'`**
 
-@pytest.mark.
+If there are errors `flash` the error. **Hint: `else` statement**
 
-## 5.13 -
+## 6.5 - Admin Navigation
 
-@pytest.mark.
-
-## 5.14 -
-
-@pytest.mark.
-
-## 5.15 -
-
-@pytest.mark.
+@pytest.mark.admin-navigation Find the admin index template and add an href attribute to the `New Job` link. Send the user to the URL ``/admin/create`. Open create job template and find the cancel anchor tag. Point the link back to the admin page using `url_for()`.

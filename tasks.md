@@ -84,7 +84,7 @@ In the body of each function return a call to `render_template()` passing the ap
 
 ## 2.1 - Create Layout Template
 
-@pytest.mark.layout-template We want each template to have a  consistent look and feel. We can create a base layout that each template can extend. First create a new file called `layout.html` in the root of the `templates` folder. Copy the basic structure of the file from the file called `templates.html`.
+@pytest.mark.layout-template We want each template to have a  consistent look and feel. We can create a base layout that each template can extend. First, create a new file called `layout.html` in the root of the `templates` folder. Copy the basic structure of the file from the file called `templates.html`.
 
 ## 2.2 - Add Styles
 
@@ -98,16 +98,16 @@ In the body of each function return a call to `render_template()` passing the ap
 - `employer.html`
 - `review.html`
 
-Next create a new folder called `admin` in the `templates` folder, then create the following files:
+Next, create a new folder called `admin` in the `templates` folder, then create the following files:
 - `index.html`
 - `create.html`
 
 ## 2.4 - Template Files HTML
-@pytest.mark.template-files-html Locate the `templates.html` file in the the root of the project. To prevent having to write all HTML from scratch the HTML structure of several of the template files is given here. Each block has a comment that describes what HTML file, the HTML block, needs to be copied too. Copy each block to the correct file.
+@pytest.mark.template-files-html Locate the `templates.html` file in the root of the project. To prevent having to write all HTML from scratch the HTML structure of several of the template files is given here. Each block has a comment that describes what HTML file, the HTML block, needs to be copied too. Copy each block to the correct file.
 
 ## 2.5 - Extend Base Layout
 
-@pytest.mark.extend-base-layout Each of the files list below needs to extend the base layout. This can be done by adding an `extends` directive with `{% %}` template syntax to the top of each file.
+@pytest.mark.extend-base-layout Each of the files listed below needs to extend the base layout. This can be done by adding an `extends` directive with `{% %}` template syntax to the top of each file.
 
 - `job.html`
 - `employer.html`
@@ -127,7 +127,7 @@ Next create a new folder called `admin` in the `templates` folder, then create t
 
 ## 3.2 - Import Global Namespace
 
-@pytest.mark.app-import-global-namespace To provide access to the database through out the application we are going to create a function that stores a reference to the database connection in the application_context. Before we can do that in the `from flask` statement add `g` to the import. 
+@pytest.mark.app-import-global-namespace To provide access to the database throughout the application we are going to create a function that stores a reference to the database connection in the application_context. Before we can do that in the `from flask` statement add `g` to the import. 
 
 ## 3.3 - Global Database Access
 
@@ -135,7 +135,7 @@ Next create a new folder called `admin` in the `templates` folder, then create t
 
 ## 3.4 - Querying the Database 
 
-@pytest.mark.app-querying-the-database Lets create a function below the `get_db` function to make it easier to query the database. Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
+@pytest.mark.app-querying-the-database Let's create a function below the `get_db` function to make it easier to query the database. Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
 
 ## 3.5 - Close the Connection
 
@@ -149,7 +149,7 @@ Next create a new folder called `admin` in the `templates` folder, then create t
 
 ## 4.2 - Individual Job Details
 
-@pytest.mark.app-individual-job-details To bring back just one job from the database we are going to use a where clause. In the where clause we will need a `job_id`. We are going to get this from the URL. In `app.py` locate the `job` function. In the route decorator for the function after the url path `/job` add `/<job_id>`.  To use this `job_id` we also need to pass it to the job function add `job_id` to the parameter list of the `job` function. Above the `render_template` function, call the `query_db` function and assign the results of the call to a `job` variable. Pass the function three arguments: 
+@pytest.mark.app-individual-job-details To bring back just one job from the database we are going to use a where clause. In the where clause we will need a `job_id`. We are going to get this from the URL. In `app.py` locate the `job` function. In the route decorator for the function after the URL path `/job` add `/<job_id>`.  To use this `job_id` we also need to pass it to the job function add `job_id` to the parameter list of the `job` function. Above the `render_template` function, call the `query_db` function and assign the results of the call to a `job` variable. Pass the function three arguments: 
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id WHERE job.id = ?'`
 - List Literal: [job_id]
 - True: This will bring back only one result.
@@ -158,7 +158,7 @@ In the `render_template` function, pass a keyword argument of `job=job`
 
 ## 4.3 - Individual Employer Details
 
-@pytest.mark.app-individual-employer-details Similar to the `job` function the employer route will only need the details of one employer. Locate the `employer` function in `app.py`. Again we need the unique id of an employer and will receive this from the URL. Add `/<employer_id>` in the route decorator after `/employer`. So that the `employer` function has access to this value add `employer_id`to the parameter list. Make a call to `query_db` and assign tne return value to `employer`. Pass in the arguments:
+@pytest.mark.app-individual-employer-details Similar to the `job` function the employer route will only need the details of one employer. Locate the `employer` function in `app.py`. Again we need the unique id of an employer and will receive this from the URL. Add `/<employer_id>` in the route decorator after `/employer`. So that the `employer` function has access to this value add `employer_id`to the parameter list. Make a call to `query_db` and assign the return value to `employer`. Pass in the arguments:
 - SQL Query: 'SELECT * FROM employer WHERE id=?'
 - List Literal: [employer_id]
 - True: This will bring back only one result.
@@ -167,7 +167,7 @@ In the `render_template` function, pass a keyword argument of `employer=employer
 
 ## 4.4 - All Employer Jobs
 
-@pytest.mark.app-all-employer-jobs On the employer details page we want to display all of the employers jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
+@pytest.mark.app-all-employer-jobs On the employer details page, we want to display all of the employers' jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?'`
 - List Literal: [employer_id]
 
@@ -182,7 +182,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
 
 ## 4.6 -Display All Jobs
 
-@pytest.mark.display-all-jobs Open the file `templates/index.html` above the `{% endblock %}` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop.. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  Too this `<div>` add the following template code: 
+@pytest.mark.display-all-jobs Open the file `templates/index.html` above the `{% endblock %}` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  Too this `<div>` add the following template code: 
 
 ```
 {% with job=job %}
@@ -211,7 +211,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
   
 ## 4.9 -Display All Employer Jobs
 
-@pytest.mark.display-all-employer-jobs Open the file `templates/employer.html` below the jobs `<h2>` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop.. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  To the `<div>` add the following template code: 
+@pytest.mark.display-all-employer-jobs Open the file `templates/employer.html` below the jobs `<h2>` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  To the `<div>` add the following template code: 
 
 ```
 {% with job=job %}
@@ -237,7 +237,7 @@ In the body of the function return the render_template function passing in `revi
 
 @pytest.mark.app-review-check-for-error Still in the review function below the value checks add an `if` statement that checks if `error` is `None`. If there are no errors we are going to add the form values to the database. To do this we need to connect to the database and commit some changes. Follow these steps: 
 - Set a `db` variable to a call to `get_db()`
-- `execute` the following SQL statment: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
+- `execute` the following SQL statement: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
 - `commit` the changes to the database.
 - return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**
 
@@ -249,7 +249,7 @@ If there are errors (`else` statement) `flash` the error. **Hint: `else` stateme
 
 ## 5.6 - Individual Employer Reviews
 
-@pytest.mark.app-individual-employer-reviews Now that employer reviews can be created, lets display them on the individual employer pages. Switch back to `app.py` and find the `employer` function below the jobs query add an new query to get all review for the employer. Make a call to `query_db` and assign tne return value to `reviews`. Pass in the arguments:
+@pytest.mark.app-individual-employer-reviews Now that employer reviews can be created, let's display them on the individual employer pages. Switch back to `app.py` and find the `employer` function below the jobs query add a new query to get all review for the employer. Make a call to `query_db` and assign the return value to `reviews`. Pass in the arguments:
 - SQL Query: 'SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?'
 - List Literal: [employer_id]
 
@@ -269,7 +269,7 @@ In the `content <div>` add a paragraph tag. In the paragraph display the details
 - `date`
 - `review`
 
-For the `Create Review` button to work add an `href` that points to the individual employer page. 
+For the `Create Review` button to work, add an `href` that points to the individual employer page. 
 
 # Module 06 - Add Jobs
 

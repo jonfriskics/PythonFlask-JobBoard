@@ -131,19 +131,48 @@ In the body of the `get_db` function use the built-in `getattr()` function to ge
 
 ## 3.6 - sqlite3 Row Factory
 
-@pytest.mark.app-sqlite3-row-factory To make accessing data easier, after the if statement in `get_db`, set the row_factory of `db` to `sqlite3.Row`. All rows returned from the database will be named tuples. 
+@pytest.mark.app-sqlite3-row-factory To make accessing data easier, after the if statement in `get_db`:
+- Set the row_factory of `db` to `sqlite3.Row`. **Note: All rows returned from the database will be named tuples.**
+- Return the `db` variable.
 
-Return the `db` variable.
+## 3.7 - Query Database Function
 
-## 3.7 - Querying the Database 
+@pytest.mark.app-query-database-function Let’s create a function  to make it easier to query the database. 
 
-@pytest.mark.app-querying-the-database Let’s create a function below the `get_db` function to make it easier to query the database. 
+Below the `get_db` function in `app.py` create a function called `query_db`. 
 
-Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
+In the body of `query_db` create a variable called `db`. Assign this variable the return value of a call to the newly created `get_db` function.
 
-## 3.5 - Close the Connection
+## 3.8 - Query Database Function Parameters
 
-@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`. Add a parameter called `exception`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn’t exist set the default to `None`. Assign the return value of the `getattr` function to`db`. If `db` is not `None` `close` the `db`. To ensure this function is called when the `app_context` is destroyed use the ``@app.teardown_appcontext` decorator.
+@pytest.mark.app-query-database-function-parameters Still working with the `query_db` function:
+- Add three parameters: `query`, `args`, and `one`.  
+- Set the default of `args` to an empty tuple `()`. 
+- Set the default of `one` to `False`.   
+
+## 3.9 - Query Database Function Execute
+@pytest.mark.app-query-database-function-execute In the body of `query_db` call the `execute` function on `db`, pass in the `query` and `args` variables. Assign the return value to a variable called `cursor`.
+
+## 3.10 - Query Database Function Execute
+@pytest.mark.app-query-database-function-fetchall In the body of `query_db`:
+- `fetchall` data from the `cursor` and assign it to a variable called `results`.
+- Close the `cursor` with the `close` function. 
+
+## 3.11 - Query Database Function Execute
+@pytest.mark.app-query-database-function-single Next, in the function body add a test if `one` is `True`:
+- if true return a ternary if, `results[0] if results else None`.
+- else return all `results`.
+
+## 3.12 - Close the Connection
+
+@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`.
+Add a parameter called `exception` to the parameter list.
+
+In the function body:
+- Call `getattr` with three arguments `g`, `'_database'`, and `None` and assign the return value to a `db` variable. 
+- If `db` is not `None` `close` the `db`. 
+
+To ensure this function is called when the `app_context` is destroyed use the `@app.teardown_appcontext` decorator.
 
 # Module 04 - Display Jobs and Employers
 

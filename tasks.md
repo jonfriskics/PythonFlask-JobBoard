@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ## Verify Setup
 
-In order to verify that everything is setup correctly, run the following command, which should show you the failing tests. This is good! We'll be fixing this test once we jump into the build step.
+In order to verify that everything is setup correctly, run the following command, which should show you the failing tests. This is good! We’ll be fixing this test once we jump into the build step.
 
 ```
 pytest
@@ -44,17 +44,17 @@ Every time you want to check your work locally you can type that command, and it
 
 ## Previewing Your Work
 
-You can preview your work by running `flask run` in the root of your fork and then visit `http://localhost:5000` in your browser.
+You can preview your work by running `flask run` in the root of your fork. Then visit `http://localhost:5000` in your browser.
 
-# Module 01 - Routing
+# Module 01 - Flask Setup
 
 ## 1.1 - Import Flask
 
-@pytest.mark.app-import-flask In order to create a flask application Import `Flask` and `render_template` from `flask` in `jobs/app.py`.
+@pytest.mark.app-import-flask In order to create a flask application, Import the `Flask` class and the `render_template` function from `flask` at the top of the `jobs/app.py` file.
 
 ## 1.2 - Create a Flask Application
 
-@pytest.mark.app-create-flask-app In `app.py` create an instance of the `Flask` class called `app`. Pass in the special variable `__name__` to the `Flask `constructor.
+@pytest.mark.app-create-flask-app Still in `app.py` create an instance of the `Flask` class called `app`. Pass the special variable `__name__` to the `Flask` class constructor.
 
 ## 1.3 - Templates Folder
 
@@ -62,84 +62,88 @@ You can preview your work by running `flask run` in the root of your fork and th
 
 ## 1.4 - Create Index Template
 
-@pytest.mark.index-template In the root of the `templates` folder, create a file called `index.html`. 
+@pytest.mark.index-template In the root of the `templates` folder, create a file called `index.html`. Add a single line to the file: 
+- `<h1>Jobs</h1>`
 
-## 1.5 - Create the Index Route
+## 1.5 - Index Route Function
 
-@pytest.mark.app-create-index-route We will display all jobs on the index page. To start in `app.py` we will create a basic route that displays the contents of the index template. Create a function called `jobs` and attach a `route()` decorator with the URL of `/`. Add an additional path of `/jobs`. In the body of the function return a call to the `render_template()` passing in the `index.html` template.
+@pytest.mark.app-index-route-function The homepage of our job board will display all of the jobs in our database. 
 
-## 1.5 - Create Employer and Job Templates
+For now let’s setup a basic route that displays our simplified `index.html` template. 
 
-@pytest.mark.detail-templates In the root of the `templates` folder, create two files one called `employer.html` and the other called `job.html`.
+Create a basic route in `app.py` by creating a function called `jobs`. 
 
-## 1.6 -Create Detail Routes
+In the body of the function return a call to the `render_template()` function, pass a parameter of `index.html`.
 
-@pytest.mark.app-create-detail-routes We need routes for individual employers and jobs. In `app.py` create two functions one called `employer` and the other called `job`.  Add route decorators to bind these functions with the appropriate URLs: 
-- `/employer` to the `employer` function
-- `/job` to the `job `function.
+## 1.6 - Route Decorators
 
-In the body of each function return a call to `render_template()` passing the appropriate template.
+@pytest.mark.app-route-decoractors Still in `app.py` attach a `route()` decorator with the URL of `/` to the `jobs` function. Attach an additional route decorator so that this function can also be reach at the URL `/jobs`.
 
-# Module 02 - Templates
+At this point you have a working application with a single route. Try it out by opening a terminal at the root of the project and running the command `flask run`. Open a browser and navigate to the URL: `http://localhost:5000`. Appending `/jobs` should display the same page.
 
-## 2.1 - Create Layout Template
+# Module 02 - Styling
 
-@pytest.mark.layout-template We want each template to have a  consistent look and feel. We can create a base layout that each template can extend. First, create a new file called `layout.html` in the root of the `templates` folder. Copy the basic structure of the file from the file called `templates.html`.
+## 2.1 - Create a Layout Template
 
-## 2.2 - Add Styles
+@pytest.mark.layout-template We want each template to have a  consistent look and feel. We can create a base layout that all templates can extend. 
 
-@pytest.mark.add-styles The app will be styled with bulma (bulma.io). Add three link tags to the head of `layout.html`. For the first `href` use the mustache template markup `{{}}` and the `url_for()` function to link in the file `css/bulma.css` from the `static` folder. For the second add the file `css/app.css` using the same method. The last link tag should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`.
+Create a new file called `layout.html` in the root of the `templates` folder. Next, copy the basic structure of this file from the file called `templates.html`.
 
-## 2.3 - Create Template Files
+## 2.2 - Add the Bulma CSS Framework
 
-@pytest.mark.create-template-files We need to create some additional template files. In the `templates` folder create the following files:
-- `_job.html`
-- `job.html`
-- `employer.html`
-- `review.html`
+@pytest.mark.add-bulma-css-framework The app will be styled with the [Bulma CSS Framework](bulma.io) and icons will be provided by [FontAwesome](fontawesome.com). 
 
-Next, create a new folder called `admin` in the `templates` folder, then create the following files:
-- `index.html`
-- `create.html`
+Add a `<link>` tag to the head of `layout.html`. Give it an attribute of `rel="stylesheet"`.
 
-## 2.4 - Template Files HTML
-@pytest.mark.template-files-html Locate the `templates.html` file in the root of the project. To prevent having to write all HTML from scratch the HTML structure of several of the template files is given here. Each block has a comment that describes what HTML file, the HTML block, needs to be copied too. Copy each block to the correct file.
+For the `href` use the mustache template markup `{{}}` and the flask `url_for()` function to construct a link for the file `css/bulma.min.css` in `static` folder. **Hint: use the keyword argument `filename`**.
 
-## 2.5 - Extend Base Layout
+## 2.3 - Add Custom CSS
 
-@pytest.mark.extend-base-layout Each of the files listed below needs to extend the base layout. This can be done by adding an `extends` directive with `{% %}` template syntax to the top of each file.
+@pytest.mark.add-custom-css For the second `<link>` tag in `layout.html` construct an `href` for the file `css/app.css`, also in the `static` folder, using the same method. Don't forget   `rel` attribute. 
 
-- `job.html`
-- `employer.html`
-- `review.html`
-- `admin/index.html`
-- `admin/create.html`
+## 2.4 - Add FontAwesome
 
-## 2.6 - Navigation
+@pytest.mark.add-fontawesome The last `<link>` tag in `layout.html` should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`. Make sure to preview the application and check out the _awesome_ styling. 
 
-@pytest.mark.navigation We want to allow the user to navigate to the admin from the front page. In the `index.html` template file create a link to the main admin page by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin` and the classes `button`, `is-info`, and `is-pulled-right`. In the admin we allow the user to create a new job. In the `admin/index.html` template file create a link to the new job form by creating an `<a>` tag nested in the `<div>` with the two classes `columns` and `is-one-fifth`. The `<a>` tag should have an `href` with the value `/admin/create` and the classes `button`, `is-info`, and `is-pulled-right`.
+# Module 03 - Preparing for Dynamic Content
 
-# Module 03 - Database Access
+## 3.1 - Import SQLite
 
-## 3.1 - Database Path
-
-@pytest.mark.app-database-path In `app.py` and below the import statements create a constant called `DATABASE` that contains the path to the already created database stored in `db/jobs.sqlite`.
+@pytest.mark.app-import-sqlite At the top of `app.py` import the built-in `sqlite3` library.
 
 ## 3.2 - Import Global Namespace
 
-@pytest.mark.app-import-global-namespace To provide access to the database throughout the application we are going to create a function that stores a reference to the database connection in the application_context. Before we can do that in the `from flask` statement add `g` to the import. 
+@pytest.mark.app-import-global-namespace To provide access to the database throughout the application import the global helper `g` from `flask`. **Hint: the `from` statement already exists add `g` to the `import` comma separated list. 
 
-## 3.3 - Global Database Access
+## 3.3 - Database Path
 
-@pytest.mark.app-global-database-access At the top of `app.py` create a function called `get_db`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn't exist set the default to `None`. Assign the return value of the `getattr` function to`db`. Next test if `db` is `None` if it is set `db` to `g._database` and `sqlite3.connect(DATABASE)`. To make accessing data easier set the row_factory of `db` to sqlite3.row. This will set all rows to named tuples. Return the `db` variable.
+@pytest.mark.app-database-path below all of the import statements, create a constant called `DATABASE`, that contains the path to the already created database stored in `db/jobs.sqlite`.
 
-## 3.4 - Querying the Database 
+## 3.4 - Global Database Attribute
 
-@pytest.mark.app-querying-the-database Let's create a function below the `get_db` function to make it easier to query the database. Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
+@pytest.mark.app-global-database-attribute At the top of `app.py` create a function called `get_db`. 
+
+In the body of the `get_db` function use the built-in `getattr()` function to get the `'_database'` attribute from the `g` object, and set the default to `None`. Assign the return value of the `getattr` function to `db`. 
+
+## 3.5 - Global Database Connection
+
+@pytest.mark.app-global-database-connection Still in the `get_db` function, test if `db` is `None` if it is, set `db` and `g._database` to `sqlite3.connect(DATABASE)` using multiple assignment. 
+
+## 3.6 - sqlite3 Row Factory
+
+@pytest.mark.app-sqlite3-row-factory To make accessing data easier, after the if statement in `get_db`, set the row_factory of `db` to `sqlite3.Row`. All rows returned from the database will be named tuples. 
+
+Return the `db` variable.
+
+## 3.7 - Querying the Database 
+
+@pytest.mark.app-querying-the-database Let’s create a function below the `get_db` function to make it easier to query the database. 
+
+Call the function `query_db`, have the function accept three parameters: `query`, `args`, and `one`.  Set the default of `args` to an empty tuple `()`.  Set the default of `one` to `False`.  Call the newly created `get_db` function and assign the return value to a `db` variable. Call the `execute` function, passing in the `query` and `args` variables, on the `db` and assign the return value to a variable called `cursor`.  `fetchall()` data from the `cursor` and assign it to a variable called `results`. Close the `cursor` with the `close` function. Next test if there are `results` else return `None`. If there are results test if `one` is `True` and return `results[0]` else return `results`. 
 
 ## 3.5 - Close the Connection
 
-@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`. Add a parameter called `exception`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn't exist set the default to `None`. Assign the return value of the `getattr` function to`db`. If `db` is not `None` `close` the `db`. To ensure this function is called when the `app_context` is destroyed use the ``@app.teardown_appcontext` decorator.
+@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`. Add a parameter called `exception`. In the body of the function use the `getattr` function to get the `_database` attribute from the `g` object. If `_database` doesn’t exist set the default to `None`. Assign the return value of the `getattr` function to`db`. If `db` is not `None` `close` the `db`. To ensure this function is called when the `app_context` is destroyed use the ``@app.teardown_appcontext` decorator.
 
 # Module 04 - Display Jobs and Employers
 
@@ -167,7 +171,7 @@ In the `render_template` function, pass a keyword argument of `employer=employer
 
 ## 4.4 - All Employer Jobs
 
-@pytest.mark.app-all-employer-jobs On the employer details page, we want to display all of the employers' jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
+@pytest.mark.app-all-employer-jobs On the employer details page, we want to display all of the employers’ jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?'`
 - List Literal: [employer_id]
 
@@ -182,7 +186,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
 
 ## 4.6 -Display All Jobs
 
-@pytest.mark.display-all-jobs Open the file `templates/index.html` above the `{% endblock %}` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  Too this `<div>` add the following template code: 
+@pytest.mark.display-all-jobs Open the file `templates/index.html` above the `{% endblock %}` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don’t forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  Too this `<div>` add the following template code: 
 
 ```
 {% with job=job %}
@@ -211,7 +215,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
   
 ## 4.9 -Display All Employer Jobs
 
-@pytest.mark.display-all-employer-jobs Open the file `templates/employer.html` below the jobs `<h2>` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don't forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  To the `<div>` add the following template code: 
+@pytest.mark.display-all-employer-jobs Open the file `templates/employer.html` below the jobs `<h2>` add a `<div>` with two classes `columns` and `is-multiline`. In the div add a `for in` loop that loops through all jobs. Use the `{% %}` template syntax, don’t forget about ending the `for` loop. In the `for` loop add a `<div>` with two classes `column` and `is-half`.  To the `<div>` add the following template code: 
 
 ```
 {% with job=job %}
@@ -246,11 +250,11 @@ If there are errors (`else` statement) `flash` the error. **Hint: `else` stateme
 
 ## 5.5 - Review Form Cancel
 
-@pytest.mark.review-form-cancel Open `templates/review.html` and find the cancel anchor tag. Add an `href` attribute with a value of ``{{ url_for('employer', employer_id=employer_id) }}`.
+@pytest.mark.review-form-cancel Open `templates/review.html` and find the cancel anchor tag. Add an `href` attribute with a value of `{{ url_for('employer', employer_id=employer_id) }}`.
 
 ## 5.6 - Individual Employer Reviews
 
-@pytest.mark.app-individual-employer-reviews Now that employer reviews can be created, let's display them on the individual employer pages. Switch back to `app.py` and find the `employer` function below the jobs query add a new query to get all review for the employer. Make a call to `query_db` and assign the return value to `reviews`. Pass in the arguments:
+@pytest.mark.app-individual-employer-reviews Now that employer reviews can be created, let’s display them on the individual employer pages. Switch back to `app.py` and find the `employer` function below the jobs query add a new query to get all review for the employer. Make a call to `query_db` and assign the return value to `reviews`. Pass in the arguments:
 - SQL Query: 'SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?'
 - List Literal: [employer_id]
 

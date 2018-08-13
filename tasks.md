@@ -71,17 +71,22 @@ You can preview your work by running `flask run` in the root of your fork. Then 
 
 For now let’s setup a basic route that displays our simplified `index.html` template. 
 
-Create a basic route in `app.py` by creating a function called `jobs`. 
-
-In the body of the function return a call to the `render_template()` function, pass a parameter of `index.html`.
+- Create a basic route in `app.py` by creating a function called `jobs`. 
+- In the body of the function return a call to the `render_template()` function, pass a parameter of `index.html`.
 
 ## 1.6 - Route Decorators
 
-@pytest.mark.app-route-decoractors Still in `app.py` attach a `route()` decorator with the URL of `/` to the `jobs` function. Attach an additional route decorator so that this function can also be reach at the URL `/jobs`.
+@pytest.mark.app-route-decoractors Still in `app.py`:
+- Attach a `route()` decorator with the URL of `/` to the `jobs` function. 
+- Attach an additional route decorator of `/jobs`. **Note: The `jobs` function can now be reached at `/` and `/jobs`**
 
-At this point you have a working application with a single route. Try it out by opening a terminal at the root of the project and running the command `flask run`. Open a browser and navigate to the URL: `http://localhost:5000`. Appending `/jobs` should display the same page.
+    # Preview
+    At this point you have a working application with a single route. Try it out: 
+    - Open a terminal at the root of the project
+    - Run the command `flask run`. 
+    - Open a browser and navigate to the URL: `http://localhost:5000`. **Note: Appending `/jobs` should display the same page.**
 
-# Module 02 - Styling
+# Module 02 - Base Template and Styling
 
 ## 2.1 - Create a Layout Template
 
@@ -104,6 +109,19 @@ For the `href` use the mustache template markup `{{}}` and the flask `url_for()`
 ## 2.4 - Add FontAwesome
 
 @pytest.mark.add-fontawesome The last `<link>` tag in `layout.html` should have an `href` value of `https://use.fontawesome.com/releases/v5.2.0/css/all.css`. Make sure to preview the application and check out the _awesome_ styling. 
+
+## 2.5 - Extend Base Template
+
+@pytest.mark.extend-base-template To use `layout.html` as the base template:
+- Open `index.html`, above the `<h1>` use the template markup `{% %}` and the extends tag to inherit `layout.html`. 
+- Wrap the `<h1>` element in a `block` called `content`.
+
+# Preview
+    At this point you have a styled application. 
+    Check out the styles: 
+    - Open a terminal at the root of the project
+    - Run the command `flask run`. 
+    - Open a browser and navigate to the URL: `http://localhost:5000`.
 
 # Module 03 - Preparing for Dynamic Content
 
@@ -153,28 +171,32 @@ In the body of `query_db` create a variable called `db`. Assign this variable th
 ## 3.9 - Query Database Function Execute
 @pytest.mark.app-query-database-function-execute In the body of `query_db` call the `execute` function on `db`, pass in the `query` and `args` variables. Assign the return value to a variable called `cursor`.
 
-## 3.10 - Query Database Function Execute
+## 3.10 - Query Database Function Fetchall
 @pytest.mark.app-query-database-function-fetchall In the body of `query_db`:
 - `fetchall` data from the `cursor` and assign it to a variable called `results`.
 - Close the `cursor` with the `close` function. 
 
-## 3.11 - Query Database Function Execute
-@pytest.mark.app-query-database-function-single Next, in the function body add a test if `one` is `True`:
+## 3.11 - Query Database Function Single
+@pytest.mark.app-query-database-function-single Next, in the function body of `query_db` add a test if `one` is `True`:
 - if true return a ternary if, `results[0] if results else None`.
 - else return all `results`.
 
 ## 3.12 - Close the Connection
 
-@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down create a function in `app.py` called `close_connection`.
-Add a parameter called `exception` to the parameter list.
+@pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down:
+- Create a function in `app.py` called `close_connection`.
+- Add a parameter called `exception` to the parameter list.
 
 In the function body:
-- Call `getattr` with three arguments `g`, `'_database'`, and `None` and assign the return value to a `db` variable. 
+- Call `getattr` with three arguments `g`, `'_database'`, and `None` 
+- Assign the return value to a `db` variable. 
 - If `db` is not `None` `close` the `db`. 
 
-To ensure this function is called when the `app_context` is destroyed use the `@app.teardown_appcontext` decorator.
+## 3.13 - Close the Connection Decorator
 
-# Module 04 - Display Jobs and Employers
+@pytest.mark.app-close-the-connection-decorator To ensure the `close_connection` function is called when the `app_context` is destroyed give decorate it with `@app.teardown_appcontext`.
+
+# Module 04 - Display Jobs
 
 ## 4.1 - All Jobs
 

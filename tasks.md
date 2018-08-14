@@ -199,7 +199,7 @@ In the function body:
 
 ## 3.13 - Close the Connection Decorator
 
-@pytest.mark.app-close-the-connection-decorator To ensure the `close_connection` function is called when the `app_context` is destroyed give decorate it with `@app.teardown_appcontext`.
+@pytest.mark.app-close-the-connection-decorator To ensure the `close_connection` function is called when the `app_context` is destroyed decorate it with `@app.teardown_appcontext`.
 
 # Module 04 - Display All Jobs
 

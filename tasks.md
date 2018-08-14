@@ -50,7 +50,7 @@ You can preview your work by running `flask run` in the root of your fork. Then 
 
 ## 1.1 - Import Flask
 
-@pytest.mark.app-import-flask In order to create a flask application, Import the `Flask` class and the `render_template` function from `flask` at the top of the `jobs/app.py` file.
+@pytest.mark.app-import-flask In order to create a flask application, import the `Flask` class and the `render_template` function from `flask` at the top of the `jobs/app.py` file.
 
 ## 1.2 - Create a Flask Application
 

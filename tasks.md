@@ -431,7 +431,7 @@ In the body of the function return the `render_template` function passing in the
 @pytest.mark.app-review-post-request-check In the body of the `review` above the render_template function call, create an `if` statement that checks if `request.method` is `'POST'`. 
 
 - In the `if` statement create four variables `review`, `rating`, `title`, and `status`. Set them equal to their respective `request.form` values i.e. `request.form['review']`. 
-- Create a `date` variable assign it todays date formatted like '08/10/2018`. **Hint: Use `now()` and `strftime("%m/%d/%Y")`. If you use `now()` add an `import datetime` statement to the top of `app.py`.**
+- Create a `date` variable assign it todays date formatted like '08/10/2018'. **Hint: Use `now()` and `strftime("%m/%d/%Y")`. If you use `now()` add an `import datetime` statement to the top of `app.py`.**
 
 ## 7.3 - Insert Review
 

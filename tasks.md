@@ -353,7 +353,7 @@ To the top of the file inherit from the `layout.html` template by using an `exte
 
 ## 6.5 - Employer Template Review Stars
 
-@pytest.mark.employer-template-reviews Still `employer.html` in the `<div>` with a class of `media-left` add this for loop:
+@pytest.mark.employer-template-review-stars Still `employer.html` in the `<div>` with a class of `media-left` add this for loop:
 
 ```
 {% for _ in range(1, review['rating']): %}

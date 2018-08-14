@@ -245,7 +245,7 @@ In `<p>` tag add the following:
 ## 4.8 - Show Jobs Macro For Loop Body
 
 @pytest.mark.show-jobs-macro-for-loop-body In the body of the `for` loop add a `<div>` with two classes `column` and `is-half`.  
-- In this `column` `<div>` add a call to the `show_job` macro passing in a individual `job` from the `for` loop.
+- In this `column` `<div>` add a call to the `show_job` macro passing in an individual `job` from the `for` loop.
 
 ## 4.9 - Import Macros
 
@@ -257,7 +257,7 @@ In `<p>` tag add the following:
 
 ## 4.10 - Import Macros
 
-@pytest.mark.import-macros Copy the HTML structure of the `index.html` from `templates.html`. Paste in the new block replacing the existing `content` block.
+@pytest.mark.import-macros Copy the HTML structure of the `index.html` file from `templates.html`. Paste in the new block replacing the existing `content` block.
 
 ## 4.11 - Display All Jobs
 

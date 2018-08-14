@@ -62,7 +62,8 @@ You can preview your work by running `flask run` in the root of your fork. Then 
 
 ## 1.4 - Create Index Template
 
-@pytest.mark.index-template In the root of the `templates` folder, create a file called `index.html`. Add a single line to the file: 
+@pytest.mark.index-template In the root of the `templates` folder, create a file called `index.html`. Add a single line to the file:
+
 - `<h1>Jobs</h1>`
 
 ## 1.5 - Index Route Function
@@ -77,6 +78,7 @@ For now let’s setup a basic route that displays our simplified `index.html` te
 ## 1.6 - Route Decorators
 
 @pytest.mark.app-route-decoractors Still in `app.py`:
+
 - Attach a `route()` decorator with the URL of `/` to the `jobs` function. 
 - Attach an additional route decorator of `/jobs`. **Note: The `jobs` function can now be reached at `/` and `/jobs`**
 
@@ -108,7 +110,7 @@ For the `href` use the mustache template markup `{{}}` and the flask `url_for()`
 
 ## 2.3 - Add Custom CSS
 
-@pytest.mark.add-custom-css For the second `<link>` tag in `layout.html` construct an `href` for the file `css/app.css`, also in the `static` folder, using the same method. Don't forget   `rel` attribute. 
+@pytest.mark.add-custom-css For the second `<link>` tag in `layout.html` construct an `href` for the file `css/app.css`, also in the `static` folder, using the same method. Don't forget the `rel` attribute. 
 
 ## 2.4 - Add FontAwesome
 
@@ -117,6 +119,7 @@ For the `href` use the mustache template markup `{{}}` and the flask `url_for()`
 ## 2.5 - Extend Base Template
 
 @pytest.mark.extend-base-template To use `layout.html` as the base template:
+
 - Open `index.html`, above the `<h1>` use the template markup `{% %}` and the extends tag to inherit `layout.html`. 
 - Wrap the `<h1>` element in a `block` called `content`.
 
@@ -155,6 +158,7 @@ In the body of the `get_db` function use the built-in `getattr()` function to ge
 ## 3.6 - sqlite3 Row Factory
 
 @pytest.mark.app-sqlite3-row-factory To make accessing data easier, after the if statement in `get_db`:
+
 - Set the row_factory of `db` to `sqlite3.Row`. **Note: All rows returned from the database will be named tuples.**
 - Return the `db` variable.
 
@@ -169,6 +173,7 @@ In the body of `query_db` create a variable called `db`. Assign this variable th
 ## 3.8 - Query Database Function Parameters
 
 @pytest.mark.app-query-database-function-parameters Still working with the `query_db` function:
+
 - Add three parameters: `query`, `args`, and `one`.  
 - Set the default of `args` to an empty tuple `()`. 
 - Set the default of `one` to `False`.   
@@ -178,21 +183,25 @@ In the body of `query_db` create a variable called `db`. Assign this variable th
 
 ## 3.10 - Query Database Function Fetchall
 @pytest.mark.app-query-database-function-fetchall In the body of `query_db`:
+
 - `fetchall` data from the `cursor` and assign it to a variable called `results`.
 - Close the `cursor` with the `close` function. 
 
 ## 3.11 - Query Database Function Single
 @pytest.mark.app-query-database-function-single Next, in the function body of `query_db` add a test if `one` is `True`:
+
 - if true return a ternary if, `results[0] if results else None`.
 - else return all `results`.
 
 ## 3.12 - Close the Connection
 
 @pytest.mark.app-close-the-connection In order to make sure the database connection is closed when the `app_context` is torn down:
+
 - Create a function in `app.py` called `close_connection`.
 - Add a parameter called `exception` to the parameter list.
 
 In the function body:
+
 - Call `getattr` with three arguments `g`, `'_database'`, and `None` 
 - Assign the return value to a `db` variable. 
 - If `db` is not `None` `close` the `db`. 
@@ -225,8 +234,9 @@ In the function body:
 ## 4.5 - Show Job Macro Body
 
 @pytest.mark.show-job-macro-body Next find the `<div>` with a class of `content` in the `show_job` macro and add a `<p>` tag. 
-In `<p>` tag add the following: 
-- `<a>` tag with an `href` of `{{ url_for('employer', employer_id=job['employer_id']) }}`.The content should be `{{ job['employer_name'] }}`. 
+In `<p>` tag add the following:
+
+- `<a>` tag with an `href` of `{{ url_for('employer', employer_id=job['employer_id']) }}`. The content should be `{{ job['employer_name'] }}`. 
 - Line break
 - ${{ job['salary'] }} 
 - Line break
@@ -239,20 +249,24 @@ In `<p>` tag add the following:
 ## 4.7 - Show Jobs Macro For Loop
 
 @pytest.mark.show-jobs-macro-for-loop Still in `_macros.html` and in the body of the `show_jobs` macro add the following HTML:
+
 - Add a `<div>` with two classes `columns` and `is-multiline`.
 - In this `<div>` add a `for in` loop that loops through all jobs. **Note: Use the `{% %}` template syntax, don’t forget about ending the `for` loop.**
 
 ## 4.8 - Show Jobs Macro For Loop Body
 
-@pytest.mark.show-jobs-macro-for-loop-body In the body of the `for` loop add a `<div>` with two classes `column` and `is-half`.  
+@pytest.mark.show-jobs-macro-for-loop-body In the body of the `for` loop add a `<div>` with two classes `column` and `is-half`.
+  
 - In this `column` `<div>` add a call to the `show_job` macro passing in an individual `job` from the `for` loop.
 
 ## 4.9 - Import Macros
 
 @pytest.mark.import-macros In `templates/layouts.html` import the `show_job`, and `show_jobs` macros using the following code:
+
 ```
 {% from '_macros.html' import show_job, show_jobs with context %}
 ``` 
+
 **Notes: Because each template extends `layouts.html` all of them will have access to these two new macros.**
 
 ## 4.10 - Import Macros
@@ -268,6 +282,7 @@ In `<p>` tag add the following:
 @pytest.mark.gather-all-jobs In `app.py` locate the `jobs` function. 
 
 Above the `render_template` function, call the `query_db` function:
+
 - Pass in the SQL statement: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id'`. 
 - Assign the results of the call to a variable called `jobs`. 
 - In the `render_template` function, pass a keyword argument of `jobs=jobs`.
@@ -309,7 +324,8 @@ Still in `app.py`, add a route decorator with the URL path `/job/<job_id>` to th
 ## 5.5 - Job Route Data
 
 @pytest.mark.app-job-route-data In the `job` function, above the `render_template` function, call the `query_db` function and assign the results of the call to a `job` variable. 
-Pass these three arguments to `query_db`: 
+Pass these three arguments to `query_db`:
+
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id WHERE job.id = ?'`
 - List Literal: [job_id]
 - True: This will bring back only one result.

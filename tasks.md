@@ -364,6 +364,7 @@ To the top of the file inherit from the `layout.html` template by using an `exte
 ## 6.6 - Employer Template Review Details
 
 @pytest.mark.employer-template-review-details Still in `employer.html` in the `content <div>` add a paragraph tag. In the paragraph display the details of a review:
+
 - `title` (Recommend Style: `<strong>`)
 - `status`(Recommend Style: `<small>`)
 - `date` (Recommend Style: `<small>`)
@@ -382,6 +383,7 @@ In the body return a call to the `render_template` function passing in the `empl
 @pytest.mark.app-employer-route-employer-details Still working with the `employer` function add `employer_id` to the parameter list so that we have access to this value. Above the `render_template` function make a call to `query_db` and assign the return value to `employer`. 
 
 Pass the following arguments to `query_db`:
+
 - SQL Query: 'SELECT * FROM employer WHERE id=?'
 - List Literal: [employer_id]
 - True: This will bring back only one result.
@@ -391,6 +393,7 @@ In the `render_template` function, pass a keyword argument of `employer=employer
 ## 6.9 - Employer Route Employer Jobs
 
 @pytest.mark.app-employer-route-employer-jobs On the employer details page, we want to display all of the employers' jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
+
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?'`
 - List Literal: [employer_id]
 
@@ -399,6 +402,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
 ## 6.10 - Employer Route Employer Review
 
 @pytest.mark.app-employer-route-employer-reviews Still in the `employer` function in `app.py` below the jobs query add a new query to get all review for the employer. Make a call to `query_db` and assign the return value to `reviews`. Pass in the arguments:
+
 - SQL Query: 'SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?'
 - List Literal: [employer_id]
 
@@ -427,15 +431,16 @@ In the body of the function return the `render_template` function passing in the
 @pytest.mark.app-review-post-request-check In the body of the `review` above the render_template function call, create an `if` statement that checks if `request.method` is `'POST'`. 
 
 - In the `if` statement create four variables `review`, `rating`, `title`, and `status`. Set them equal to their respective `request.form` values i.e. `request.form['review']`. 
-- Create a `date` variable assign it todays date formatted like '08/10/2018` **Hint: Use `now()` and `strftime("%m/%d/%Y")`. If you use `now()` add an `import datetime` statement to the top of `app.py`.**
+- Create a `date` variable assign it todays date formatted like '08/10/2018`. **Hint: Use `now()` and `strftime("%m/%d/%Y")`. If you use `now()` add an `import datetime` statement to the top of `app.py`.**
 
 ## 7.3 - Insert Review
 
-@pytest.mark.app-review-insert-review Still in the `review` function below the variables in the `if` statement connect to the database, insert the form values, and commit the changes. Follow these steps: 
-- [] Assign a `db` variable to a call to `get_db()`
-- [] `execute` the following SQL statement: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
-- [] `commit` the changes to the database.
-- [] return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass a keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**
+@pytest.mark.app-review-insert-review Still in the `review` function below the variables in the `if` statement connect to the database, insert the form values, and commit the changes. Follow these steps:
+
+- Assign a `db` variable to a call to `get_db()`
+- `execute` the following SQL statement: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
+- `commit` the changes to the database.
+- return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass a keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**
 
 ## 7.4 - Review Form Cancel
 

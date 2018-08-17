@@ -151,7 +151,7 @@ In the body of the `get_db` function use the built_in `getattr()` function to ge
 
 ## 3.5 - Global Database Connection
 
-@pytest.mark.app_get_db_connection Still in the `get_db` function, test if `db` is `None` if it is, set `db` and `g._database` to `sqlite3.connect(DATABASE)` using multiple assignment. 
+@pytest.mark.app_get_db_connection Still in the `get_db` function, test if `db` is `None` if it is, set `db` and `g._database` to `sqlite3.connect(DATABASE)` using multiple assignment.
 
 ## 3.6 - sqlite3 Row Factory
 

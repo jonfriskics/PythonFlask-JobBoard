@@ -2,26 +2,31 @@ import pytest
 import sys
 
 from jobs import app
+from .utils import *
+
 
 @pytest.mark.app_import_sqlite
 def test_app_import_sqlite_module3():
-    pass
+    assert 'sqlite3' in dir(app), 'Have you imported `sqlite`'
 
 @pytest.mark.app_import_g
 def test_app_import_g_module3():
-    pass
+    assert 'g' in dir(app), 'Have you imported the `g` class from `flask`'
 
 @pytest.mark.app_db_path
 def test_app_db_path_module3():
-    pass
+    assert 'DATABASE' in dir(app), 'Have you created a constant called `DATABASE`.'
+    assert app.DATABASE == 'db/jobs.sqlite', 'Have you created a constant called `DATABASE`.'
 
 @pytest.mark.app_get_db_get_attribute
 def test_app_get_db_get_attribute_module3():
-    pass
+    assert 'get_db' in dir(app), 'Have you defined a function named `get_db`.'
+    assert 'getattr:g:_database:None' in get_functions(app.get_db)
 
 @pytest.mark.app_get_db_connection
 def test_app_get_db_connection_module3():
-    pass
+    get_statements(app.get_db)
+    assert False
 
 @pytest.mark.app_get_db_row_factory
 def test_app_get_db_row_factory_module3():

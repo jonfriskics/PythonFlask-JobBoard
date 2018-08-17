@@ -26,7 +26,8 @@ def test_templates_folder_module1():
 @pytest.mark.index_template
 def test_index_template_module1():
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
-    assert tag_contains('index', 'h1', 'Jobs'), "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
+    assert template_find('index', 'h1', limit=1), "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
+    assert template_find('index', 'h1', limit=1).text == 'Jobs', "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
 
 @pytest.mark.app_index_route_function
 def test_app_index_route_function_module1():

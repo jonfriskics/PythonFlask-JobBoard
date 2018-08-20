@@ -2,10 +2,8 @@ import pytest
 import os 
 import inspect
 
-from pprint import pprint
 from .utils import *
 from jobs import app
-
 
 @pytest.mark.app_import_flask
 def test_app_import_flask_module1():

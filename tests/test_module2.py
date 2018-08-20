@@ -1,7 +1,6 @@
 import pytest
 import sys
 
-from jinja2 import Environment, PackageLoader, meta
 from jobs import app
 from .utils import *
 

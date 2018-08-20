@@ -3,7 +3,7 @@ import sys
 
 from jobs import app
 from .utils import *
-
+from pprint import pprint
 
 @pytest.mark.app_import_sqlite
 def test_app_import_sqlite_module3():
@@ -21,11 +21,13 @@ def test_app_db_path_module3():
 @pytest.mark.app_get_db_get_attribute
 def test_app_get_db_get_attribute_module3():
     assert 'get_db' in dir(app), 'Have you defined a function named `get_db`.'
-    assert 'getattr:g:_database:None' in get_functions(app.get_db)
+    assert 'getattr:g:_database:None' in get_functions(app.get_db), 'Have used the `getattr` to get the global `_database`.'
 
 @pytest.mark.app_get_db_connection
 def test_app_get_db_connection_module3():
-    get_statements(app.get_db)
+    assert 'get_db' in dir(app), 'Have you defined a function named `get_db`.'
+    assert 'db:true:None' in get_statements(app.get_db), 'Have you created an `if` statement to test if `db` is `None`.'
+    print(source_dict(app.get_db))
     assert False
 
 @pytest.mark.app_get_db_row_factory

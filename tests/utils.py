@@ -1,9 +1,22 @@
-import os
 import ast
 import inspect
+import json
+import os
+import collections
 
-from jinja2 import nodes, Environment, PackageLoader, meta, exceptions
 from bs4 import BeautifulSoup
+from jinja2 import Environment, PackageLoader, exceptions, meta, nodes
+from jmespath import search
+
+def flatten(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collections.MutableMapping):
+            items.extend(flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
 
 env = Environment(loader=PackageLoader('jobs', 'templates'))
 
@@ -42,27 +55,21 @@ def get_functions(source):
     node_iter.visit(ast.parse(inspect.getsource(source)))
     return functions
 
-def get_statements(source):
-    statements = []
-
-    def visit_If(node):
-        statement = node.test.left.id
-        if isinstance(node.test.ops[0], ast.Is) or isinstance(node.test.ops[0], ast.Eq):
-            statement += ':true'
-        statement += (':' + str(node.test.comparators[0].value))
-        statements.append(statement)
+def get_assignments(source):
+    assignments = []
+    def visit_Assign(node):
+        assignments.append(build_dict(node))
 
     node_iter = ast.NodeVisitor()
-    node_iter.visit_If = visit_If
+    node_iter.visit_Assign = visit_Assign
     node_iter.visit(ast.parse(inspect.getsource(source)))
-    return statements
+    return assignments
 
-def source_dict(source):
-    return build_dict(ast.parse(inspect.getsource(source)))
 
 def build_dict(node):
     result = {}
-    result['node_type'] = node.__class__.__name__
+    if node.__class__.__name__ == 'Is' or node.__class__.__name__ == 'Eq':
+        result['node_type'] = node.__class__.__name__
     for attr in dir(node):
         if not attr.startswith("_") and attr != 'ctx' and attr != 'lineno' and attr != 'col_offset':
             value = getattr(node, attr)
@@ -70,8 +77,18 @@ def build_dict(node):
                 value = build_dict(value)
             elif isinstance(value, list):
                 value = [build_dict(n) for n in value]
-            result[attr] = value
-    return result
+                if len(value) == 1:
+                    value = value[0]
+            if value != []:
+                result[attr] = value
+    return flatten(result, sep='/')
+
+def source_dict(source):
+    return build_dict(ast.parse(inspect.getsource(source)))
+
+def source_search(source, node_type, expr):
+    expr = "body[0].body[?node_type == `{}`]{}".format(node_type, expr)
+    return search(expr, source_dict(source))
 
 def list_routes(app):
     rules = []
@@ -112,5 +129,3 @@ def parsed_content(name):
 
 def template_extends(name):
     return list(meta.find_referenced_templates(parsed_content(name)))
-
-

@@ -65,6 +65,8 @@ def get_assignments(source):
     node_iter.visit(ast.parse(inspect.getsource(source)))
     return assignments
 
+def pair_exists(d, key, value):
+    return key in d and value == d[key]
 
 def build_dict(node):
     result = {}
@@ -76,9 +78,8 @@ def build_dict(node):
             if isinstance(value, ast.AST):
                 value = build_dict(value)
             elif isinstance(value, list):
-                value = [build_dict(n) for n in value]
-                if len(value) == 1:
-                    value = value[0]
+                final = [build_dict(n) for n in value]
+                value = final[0] if len(final) == 1 else final
             if value != []:
                 result[attr] = value
     return flatten(result, sep='/')

@@ -7,7 +7,7 @@ from jobs import app
 
 @pytest.mark.app_import_flask
 def test_app_import_flask_module1():
-    assert 'Flask' in dir(app), 'Have you imported the `Flask` class from `flask`'
+    assert 'Flask' in dir(app), 'Have you imported the `Flask` class from `flask`?'
     assert inspect.isclass(app.Flask), '`Flask` is not a class.'
     assert 'render_template' in dir(app), '`render_template` has not been imported.'
     assert inspect.isfunction(app.render_template), '`render_template` is not a function.'

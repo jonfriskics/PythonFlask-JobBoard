@@ -1,5 +1,4 @@
 import pytest
-import sys
 
 from jobs import app
 from .utils import *

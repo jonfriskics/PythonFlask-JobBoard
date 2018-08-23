@@ -6,7 +6,8 @@ import collections
 
 from bs4 import BeautifulSoup
 from jinja2 import Environment, PackageLoader, exceptions, meta, nodes
-from jmespath import search
+
+env = Environment(loader=PackageLoader('jobs', 'templates'))
 
 def flatten(d, parent_key='', sep='_'):
     items = []
@@ -17,8 +18,6 @@ def flatten(d, parent_key='', sep='_'):
         else:
             items.append((new_key, v))
     return dict(items)
-
-env = Environment(loader=PackageLoader('jobs', 'templates'))
 
 def get_decorators(source):
     decorators = {}
@@ -41,32 +40,35 @@ def get_decorators(source):
 
 def get_functions(source):
     functions = []
-    def visit_Call(node):
-        name = node.func.attr if isinstance(node.func, ast.Attribute) else node.func.id
-        if name == 'getattr':
-            functions.append(name + ':' + node.args[0].id + ':' + node.args[1].s + ':' + str(node.args[2].value))
-        else:
-            if name is not 'connect':
-                functions.append(name + ':' + ':'.join([a.s for a in node.args]))
 
+    def visit_Call(node):
+        path = ''
+        args = ''
+        name = node.func.attr if isinstance(node.func, ast.Attribute) else node.func.id
+
+        if len(node.args) != 0:
+            args = ':'.join([str(val) for arg in node.args for val in build_dict(arg).values()])
+
+        path = name if args == '' else name + ':' + args
+        functions.append(path)
 
     node_iter = ast.NodeVisitor()
     node_iter.visit_Call = visit_Call
     node_iter.visit(ast.parse(inspect.getsource(source)))
     return functions
 
-def get_assignments(source):
-    assignments = []
-    def visit_Assign(node):
-        assignments.append(build_dict(node))
+# def get_assignments(source):
+#     assignments = []
+#     def visit_Assign(node):
+#         assignments.append(build_dict(node))
 
-    node_iter = ast.NodeVisitor()
-    node_iter.visit_Assign = visit_Assign
-    node_iter.visit(ast.parse(inspect.getsource(source)))
-    return assignments
+#     node_iter = ast.NodeVisitor()
+#     node_iter.visit_Assign = visit_Assign
+#     node_iter.visit(ast.parse(inspect.getsource(source)))
+#     return assignments
 
-def pair_exists(d, key, value):
-    return key in d and value == d[key]
+# def pair_exists(d, key, value):
+#     return key in d and value == d[key]
 
 def build_dict(node):
     result = {}
@@ -84,12 +86,12 @@ def build_dict(node):
                 result[attr] = value
     return flatten(result, sep='/')
 
-def source_dict(source):
-    return build_dict(ast.parse(inspect.getsource(source)))
+# def source_dict(source):
+#     return build_dict(ast.parse(inspect.getsource(source)))
 
-def source_search(source, node_type, expr):
-    expr = "body[0].body[?node_type == `{}`]{}".format(node_type, expr)
-    return search(expr, source_dict(source))
+# def source_search(source, node_type, expr):
+#     expr = "body[0].body[?node_type == `{}`]{}".format(node_type, expr)
+#     return search(expr, source_dict(source))
 
 def list_routes(app):
     rules = []

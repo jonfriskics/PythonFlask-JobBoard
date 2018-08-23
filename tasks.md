@@ -162,9 +162,9 @@ In the body of the `get_db` function use the built_in `getattr()` function to ge
 
 ## 3.7 - Query Database Function
 
-@pytest.mark.app_query_db Let’s create a function  to make it easier to query the database. 
+@pytest.mark.app_query_db Let’s create a function to make it easier to query the database. 
 
-Below the `get_db` function in `app.py` create a function called `query_db`. 
+Below the `get_db` function in `app.py` create a function called `query_db`.
 
 In the body of `query_db` create a variable called `db`. Assign this variable the return value of a call to the newly created `get_db` function.
 
@@ -172,9 +172,9 @@ In the body of `query_db` create a variable called `db`. Assign this variable th
 
 @pytest.mark.app_query_db_parameters Still working with the `query_db` function:
 
-- Add three parameters: `query`, `args`, and `one`.  
-- Set the default of `args` to an empty tuple `()`. 
-- Set the default of `one` to `False`.   
+- Add three parameters: `query`, `args`, and `one`.
+- Set the default of `args` to an empty tuple `()`.
+- Set the default of `one` to `False`.
 
 ## 3.9 - Query Database Function Execute
 @pytest.mark.app_query_db_execute In the body of `query_db` call the `execute` function on `db`, pass in the `query` and `args` variables. Assign the return value to a variable called `cursor`.

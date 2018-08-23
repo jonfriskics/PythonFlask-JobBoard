@@ -1,0 +1,19 @@
+{% from '_macros.html' import show_job, show_jobs with context %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Board</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+   <div class="container top">
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+ </body>
+</html>

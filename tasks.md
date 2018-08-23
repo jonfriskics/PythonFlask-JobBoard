@@ -118,8 +118,7 @@ For the `href` use the mustache template markup `{{}}` and the flask `url_for()`
 
 @pytest.mark.extend_base_template To use `layout.html` as the base template:
 
-- Open `index.html`, above the `<h1>` use the template markup `{% %}` and the extends tag to inherit `layout.html`. 
-- Wrap the `<h1>` element in a `block` called `content`.
+- Open `index.html`, above the `<h1>` use the template markup `{% %}` and the extends tag to inherit `layout.html`.
 
 **Preview** 
 
@@ -270,7 +269,7 @@ In `<p>` tag add the following:
 
 ## 4.10 - Index Template
 
-@pytest.mark.index_template Copy the HTML structure of the `index.html` file from `templates.html`. Paste in the new block replacing the existing `content` block.
+@pytest.mark.index_template Copy the HTML structure of the `index.html` file from `templates.html`. Replace the `<h1>` with the copied HTML structure.
 
 ## 4.11 - Display All Jobs
 

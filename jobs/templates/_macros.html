@@ -1,0 +1,22 @@
+{%  macro show_job(job) %}
+<div class="card adjust-height">
+  <header class="card-header">
+    <p class="card-header-title">
+      <a href="{{ url_for('job', job_id=job['id']) }}">{{ job['title'] }}</a>
+    </p>
+  </header>
+  <div class="card-content">
+    <div class="content">
+      <a href="{{ url_for('employer', employer_id=job['employer_id']) }}">{{ job['employer_name'] }}</a><br>
+      ${{ job['salary'] }}<br>
+      {{ job['description'] }}
+    </div>
+  </div>
+</div>
+{%  endmacro %}
+
+{%  macro show_jobs(jobs) %}
+  {%  for job in jobs %}
+    {{ show_job(job) }}
+  {%  endfor %}
+{%  endmacro %}

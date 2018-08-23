@@ -24,14 +24,13 @@ def test_templates_folder_module1():
 def test_index_template_module1():
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     assert template_find('index', 'h1', limit=1), "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
-    assert template_find('index', 'h1', limit=1).text == 'Jobs', "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
+    assert template_find('index', 'h1', limit=1)[0].text == 'Jobs', "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
 
 @pytest.mark.app_index_route_function
 def test_app_index_route_function_module1():
     assert 'app' in dir(app), 'Have you created an instance of the `Flask` class called `app`?'
     assert 'jobs' in dir(app), 'Have you created the `jobs` function?'
-    with app.app.app_context():
-        assert 'render_template:index.html' in get_functions(app.jobs)
+    assert 'render_template:index.html' in get_functions(app.jobs)
 
 @pytest.mark.app_route_decoractors
 def test_app_route_decoractors_module1():

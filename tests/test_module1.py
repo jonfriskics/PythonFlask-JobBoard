@@ -30,7 +30,8 @@ def test_index_template_module1():
 def test_app_index_route_function_module1():
     assert 'app' in dir(app), 'Have you created an instance of the `Flask` class called `app`?'
     assert 'jobs' in dir(app), 'Have you created the `jobs` function?'
-    assert 'render_template:index.html' in get_functions(app.jobs)
+    result = [item for item in get_functions(app.jobs) if item.startswith('render_template:index.html')]
+    assert len(result) == 1, 'Have you called the `render_template` function.'
 
 @pytest.mark.app_route_decoractors
 def test_app_route_decoractors_module1():
@@ -40,5 +41,5 @@ def test_app_route_decoractors_module1():
 
     rules = list_routes(app.app)
 
-    assert 'jobs:GET,HEAD,OPTIONS:/jobs' in rules
-    assert 'jobs:GET,HEAD,OPTIONS:/' in rules
+    assert 'jobs:GET,HEAD,OPTIONS:/' in rules, 'Have you decorated the `jobs` function with the `/` route?'
+    assert 'jobs:GET,HEAD,OPTIONS:/jobs' in rules, 'Have you decorated the `jobs` function with the `/jobs` route?'

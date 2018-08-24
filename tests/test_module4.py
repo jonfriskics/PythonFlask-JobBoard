@@ -63,11 +63,13 @@ def test_import_macros_module4():
 
 @pytest.mark.index_template
 def test_index_template_module4():
+    assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     el = template_data('index').select('.columns .column.is-one-fifth')
     assert len(el) == 1, 'Has the `HTML` from `templates.html` been copied to the `index.html` template?'
 
 @pytest.mark.display_all_jobs
 def test_display_all_jobs_module4():
+    assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     assert 'show_jobs:jobs' in template_functions('index', 'show_jobs'), 'Have you call the `show_jobs` macro in the `index.html` file?'
 
 @pytest.mark.app_jobs_route_jobs

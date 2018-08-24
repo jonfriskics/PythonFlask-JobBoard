@@ -53,8 +53,8 @@ def test_app_query_db_module3():
 def test_app_query_db_parameters_module3():
     assert 'query_db' in dir(app), 'Have you defined a function named `query_db`.'
     parameters = inspect.getfullargspec(app.query_db)
-    assert parameters.args[0] == 'query' and parameters.args[1] == 'args' and parameters.args[2] == 'one', 'Have you added the correct parameters to the parameters list?'
-    assert parameters.defaults[0] == () and parameters.defaults[1] == False, 'Do the `args` and `one` parameters have the correct defaults?'
+    assert parameters.args[0] == 'query' and parameters.args[1] == 'args' and parameters.args[2] == 'one', 'Have you added the correct parameters to the `query_db` function parameters list?'
+    assert parameters.defaults[0] == () and parameters.defaults[1] == False, 'Do the `args` and `one` parameters have the correct defaults in the `query_db` function parameters list?'
 
 @pytest.mark.app_query_db_execute
 def test_app_query_db_execute_module3():

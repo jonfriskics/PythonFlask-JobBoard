@@ -248,7 +248,7 @@ In `<p>` tag add the following:
 
 @pytest.mark.show_jobs_macro_for_loop Still in `_macros.html` and in the body of the `show_jobs` macro add the following HTML:
 
-- Add a `<div>` with two classes `columns` and `is_multiline`.
+- Add a `<div>` with two classes `columns` and `is-multiline`.
 - In this `<div>` add a `for in` loop that loops through all jobs. **Note: Use the `{% %}` template syntax, don’t forget about ending the `for` loop.**
 
 ## 4.8 - Show Jobs Macro For Loop Body
@@ -303,7 +303,7 @@ At this point you can see all jobs on the homepage:
 
 In the file use an `extends` template tag to inherit `layout.html`. 
 
-After the `extends` tag add a call to the `show_job` macro passing in `job`. **Note: Use the `{{}}` for the macro call.**
+After the `extends` tag add a template `block` called `content`. In the block call the `show_job` macro passing in `job`. **Note: Use the `{{}}` for the macro call.**
  
 ## 5.2 - Job Route Function
 
@@ -363,7 +363,7 @@ To the top of the file inherit from the `layout.html` template by using an `exte
 
 ## 6.4 - Employer Template Reviews
 
-@pytest.mark.employer_template_reviews Open `employer.html` and find the review `<h2>`, remove the comment surrounding the empty `{% %}` template tag. To this tag add a `for in` loop to loop through all `reviews`. Add the `endfor` directive to the second empty `{% %}` template tag, don't forget to the remove the comment. 
+@pytest.mark.employer_template_reviews Still in `employer.html` find the review `<h2>`, remove the comment surrounding the empty `{% %}` template tag. To this tag add a `for in` loop to loop through all `reviews`. Add the `endfor` directive to the second empty `{% %}` template tag, don't forget to the remove the comment. 
 
 ## 6.5 - Employer Template Review Stars
 
@@ -432,7 +432,15 @@ At this point you can see an individual employer:
 
 # Module 07 - Employer Reviews
 
-## 7.1 - Review Route
+## 7.1 - Review Template
+
+@pytest.mark.review_template To display a review form, create a new file called `review.html` in the templates folder. Open `templates.html`, find the appropriate block of HTML and copy and paste it to `review.html`.
+
+Inherit from the `layout.html` template by using an `extends` template tag.
+
+Find the cancel anchor tag. Add an `href` attribute with a value of `{{ url_for('employer', employer_id=employer_id) }}`.
+
+## 7.2 - Review Route
 
 @pytest.mark.app_review_route In `app.py` below the `employer` function create a new function called `review`. Add `employer_id` to the parameter list. 
 
@@ -440,23 +448,22 @@ Add a route decorator with a URL pattern of `/employer/<employer_id>/review`. Al
 
 In the body of the function return the `render_template` function passing in the `review.html` template and a keyword argument of `employer_id=employer_id`.
 
-## 7.2 - POST Request Check
+## 7.3 - POST Request Check
 
-@pytest.mark.app_review_post_request_check In the body of the `review` above the render_template function call, create an `if` statement that checks if `request.method` is `'POST'`. 
+@pytest.mark.app_review_post_request_check In the body of the `review` above the `render_template` function call, create an `if` statement that checks if `request.method` is equal to `'POST'`. 
 
 - In the `if` statement create four variables `review`, `rating`, `title`, and `status`. Set them equal to their respective `request.form` values i.e. `request.form['review']`. 
 - Create a `date` variable assign it todays date formatted like '08/10/2018'. **Hint: Use `now()` and `strftime("%m/%d/%Y")`. If you use `now()` add an `import datetime` statement to the top of `app.py`.**
 
-## 7.3 - Insert Review
+## 7.4 - Insert Review
 
-@pytest.mark.app_review_insert_review Still in the `review` function below the variables in the `if` statement connect to the database, insert the form values, and commit the changes. Follow these steps:
+@pytest.mark.app_review_insert_review Still in the `review` function below the variables in the `if` statement, connect to the database, insert the form values, and commit the changes. Follow these steps:
 
 - Assign a `db` variable to a call to `get_db()`
-- `execute` the following SQL statement: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
+- `execute` the following SQL statement on `db`: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
 - `commit` the changes to the database.
 - Return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass a keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**
 
-## 7.4 - Review Form Cancel
+## 7.5 - Employer Review Button
 
-@pytest.mark.review_form_cancel Open `review.html` and find the cancel anchor tag. Add an `href` attribute with a value of `{{ url_for('employer', employer_id=employer_id) }}`.
-
+@pytest.mark.employer_review_button Open the `employer.html` template and find the anchor tag to create a review. Add an `href` attribute with a value of `{{ url_for('review', employer_id=employer['id']) }}`.

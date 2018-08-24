@@ -25,15 +25,15 @@ def test_show_job_macro_html_module4():
 def test_show_job_macro_header_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'job:job_id:job:id' in template_functions('_macros', 'url_for'), 'Looks like the job title link `href` is incorrect.'
-    assert 'job:title' in template_macro_variables('_macros', 'show_job'), 'Looks like the job title link does not have content.'
+    assert 'job:title' in template_variables('_macros'), 'Looks like the job title link does not have content.'
 
 @pytest.mark.show_job_macro_body
 def test_show_job_macro_body_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'employer:employer_id:job:employer_id' in template_functions('_macros', 'url_for'), 'Looks like the job title link `href` is incorrect.'
-    assert 'job:employer_name' in template_macro_variables('_macros', 'show_job'), 'Are you showing the employer name?'
-    assert 'job:salary' in template_macro_variables('_macros', 'show_job'), 'Are you showing the job salary?'
-    assert 'job:description' in template_macro_variables('_macros', 'show_job'), 'Are you showing the job description?'
+    assert 'job:employer_name' in template_variables('_macros'), 'Are you showing the employer name?'
+    assert 'job:salary' in template_variables('_macros'), 'Are you showing the job salary?'
+    assert 'job:description' in template_variables('_macros'), 'Are you showing the job description?'
 
 @pytest.mark.show_jobs_macro_definition
 def test_show_jobs_macro_definition_module4():
@@ -43,11 +43,17 @@ def test_show_jobs_macro_definition_module4():
 @pytest.mark.show_jobs_macro_for_loop
 def test_show_jobs_macro_for_loop_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
+    html = template_macro_soup('_macros', 'show_jobs')
+    div = html.select('div.columns.is-multiline')
+    assert len(div) == 1, 'Has a `<div>` with classes of `columns` and `is-multiline` been added to the `show_jobs` macro?'
     assert 'job:jobs' in show_jobs_for(), 'Does the `show_jobs` macro contain a `for` loop?'
 
 @pytest.mark.show_jobs_macro_for_loop_body
 def test_show_jobs_macro_for_loop_body_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
+    html = template_macro_soup('_macros', 'show_jobs')
+    div = html.select('div.column.is-half')
+    assert len(div) == 1, 'Has a `<div>` with classes of `column` and `is-half` been added to the `show_jobs` macro `for` loop body?'
     assert 'show_job:job' in show_jobs_for(), 'Does the `show_jobs` macro call `show_job`?'
 
 @pytest.mark.import_macros

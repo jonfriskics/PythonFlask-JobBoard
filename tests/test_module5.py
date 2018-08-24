@@ -8,7 +8,9 @@ from .utils import *
 def test_app_job_template_module5():
     assert template_exists('job'), 'The `job.html` template does not exist in the `templates` folder.'
     assert 'layout.html' in template_extends('job'), 'The `job.html` template does not extend `layout.html`.'
+    assert 'content' in template_block('job'), 'Have you added a template `block` called `content`?'
     assert 'show_job:job' in template_functions('job', 'show_job'), 'Have you call the `show_job` macro in the `job.html` file?'
+    assert False
 
 @pytest.mark.app_job_route
 def test_app_job_route_module5():

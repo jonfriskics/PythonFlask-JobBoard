@@ -16,7 +16,11 @@
 {%  endmacro %}
 
 {%  macro show_jobs(jobs) %}
-  {%  for job in jobs %}
-    {{ show_job(job) }}
+<div class="columns is-multiline">
+  {% for job in jobs %}
+    <div class="column is-half">
+      {{ show_job(job) }}
+    </div>
   {%  endfor %}
+</div>
 {%  endmacro %}

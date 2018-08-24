@@ -56,6 +56,17 @@ def get_functions(source):
     node_iter.visit(ast.parse(inspect.getsource(source)))
     return functions
 
+def get_statements(source):
+    statements = []
+
+    def visit_If(node):
+        statements.append(build_dict(node))
+
+    node_iter = ast.NodeVisitor()
+    node_iter.visit_If = visit_If
+    node_iter.visit(ast.parse(inspect.getsource(source)))
+    return statements
+
 def build_dict(node):
     result = {}
     if node.__class__.__name__ == 'Is' or node.__class__.__name__ == 'Eq':
@@ -109,10 +120,12 @@ def template_functions(name, function_name):
                     if isinstance(kwargs.value, nodes.Const):
                         args_string += kwargs.value.value
                     else:
-                        args_string += kwargs.value.node.name
-                        if isinstance(kwargs.value.arg, nodes.Const):
-                            args_string += ':' + kwargs.value.arg.value
-            print(args_string)
+                        if isinstance(kwargs.value, nodes.Name):
+                            args_string += kwargs.value.name
+                        else:
+                            args_string += kwargs.value.node.name
+                            if isinstance(kwargs.value.arg, nodes.Const):
+                                args_string += ':' + kwargs.value.arg.value
             functions.append(args_string)
 
     return functions
@@ -128,11 +141,30 @@ def show_jobs_for():
 
     return values
 
+def employer_for():
+    values = []
+
+    for node in parsed_content('employer').find_all(nodes.For):
+        path = node.target.name
+        if isinstance(node.iter, nodes.Name):
+            path += ':' + node.iter.name
+        elif isinstance(node.iter, nodes.Call):
+            path += ':' + node.iter.node.name + ':' + str(node.iter.args[0].value) + ':' + str(node.iter.args[1].node.name) + ':' + str(node.iter.args[1].arg.value)
+        values.append(path)
+
+    return values
+
 def template_macros(name):
     macros = []
     for macro in parsed_content(name).find_all(nodes.Macro):
         macros.append(macro.name + ':' + macro.args[0].name)
     return macros
+
+def template_block(name):
+    blocks = []
+    for block in parsed_content(name).find_all(nodes.Block):
+        blocks.append(block.name)
+    return blocks
 
 def template_macro_soup(name, macro_name):
     for macro in parsed_content(name).find_all(nodes.Macro):
@@ -148,7 +180,7 @@ def template_data(name):
         html += node.data
     return source_soup(html)
 
-def template_macro_variables(name, macro_name):
+def template_variables(name):
     return [item.node.name + ':' + item.arg.value for item in parsed_content(name).find_all(nodes.Getitem)]
 
 def template_exists(name):

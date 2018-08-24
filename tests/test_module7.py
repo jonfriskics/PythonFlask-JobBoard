@@ -5,7 +5,7 @@ import json
 from jobs import app
 from .utils import *
 
-@pytest.mark.review_form_cancel
+@pytest.mark.review_template
 def test_review_template_module7():
     assert template_exists('review'), 'The `review.html` template does not exist in the `templates` folder.'
     el = template_data('review').select('.field.is-grouped .control .button.is-text')
@@ -83,7 +83,7 @@ def test_app_review_insert_review_module7():
     assert 'redirect:employer:url_for:employer_id:employer_id' in get_functions(app.review), 'In the `if` are you redirect back to the employer page?'
 
 
-@pytest.mark.app_review_insert_review
+@pytest.mark.employer_review_button
 def test_employer_review_button_module7():
     assert template_exists('employer'), 'The `employer.html` template does not exist in the `templates` folder.'
     assert 'review:employer_id:employer:id' in template_functions('employer', 'url_for'), 'In the `if` are you redirect back to the employer page?'

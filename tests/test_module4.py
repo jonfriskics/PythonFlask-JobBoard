@@ -75,6 +75,6 @@ def test_display_all_jobs_module4():
 @pytest.mark.app_jobs_route_jobs
 def test_app_jobs_route_jobs_module4():
     assert 'jobs' in dir(app), 'Have you created the `jobs` function?'
-    query_db = 'query_db:SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id' 
-    assert query_db in get_functions(app.jobs), '`query_db` has not been called or has the wrong parameters.'
+    execute_sql = 'execute_sql:SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id' 
+    assert execute_sql in get_functions(app.jobs), '`execute_sql` has not been called or has the wrong parameters.'
     assert 'render_template:index.html:jobs:jobs' in get_functions(app.jobs), 'Have you added `jobs` to the `render_template` call.'

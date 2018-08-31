@@ -140,57 +140,55 @@ At this point you have a styled application. Check out the styles:
 
 ## 3.3 - Database Path
 
-@pytest.mark.app_db_path below all of the import statements, create a constant called `DATABASE`, that contains the path to the already created database stored in `db/jobs.sqlite`.
+@pytest.mark.app_db_path below all of the import statements, create a constant called `PATH`, that contains the path to the already created database stored in `db/jobs.sqlite`.
 
 ## 3.4 - Global Database Attribute
 
-@pytest.mark.app_get_db_get_attribute At the top of `app.py` create a function called `get_db`. 
+@pytest.mark.app_open_connection_get_attribute At the top of `app.py` create a function called `open_connection`. 
 
-In the body of the `get_db` function use the built_in `getattr()` function to get the `'_database'` attribute from the `g` object, and set the default to `None`. Assign the return value of the `getattr` function to `db`. 
+In the body of the `open_connection` function use the built_in `getattr()` function to get the `'_connection'` attribute from the `g` object, and set the default to `None`. Assign the return value of the `getattr` function to `db`. 
 
 ## 3.5 - Global Database Connection
 
-@pytest.mark.app_get_db_connection Still in the `get_db` function, test if `db` is `None` if it is, set `db` and `g._database` to `sqlite3.connect(DATABASE)` using multiple assignment.
+@pytest.mark.app_open_connection_connection Still in the `open_connection` function, test if `connection` is `None` if it is, set `connection` and `g._connection` to `sqlite3.connect(PATH)` using multiple assignment.
 
 ## 3.6 - sqlite3 Row Factory
 
-@pytest.mark.app_get_db_row_factory To make accessing data easier, after the if statement in `get_db`:
+@pytest.mark.app_open_connection_row_factory To make accessing data easier, after the if statement in `open_connection`:
 
-- Set the row_factory of `db` to `sqlite3.Row`. **Note: All rows returned from the database will be named tuples.**
-- Return the `db` variable.
+- Set the row_factory of `connection` to `sqlite3.Row`. **Note: All rows returned from the database will be named tuples.**
+- Return the `connection` variable.
 
 ## 3.7 - Query Database Function
 
-@pytest.mark.app_query_db Let’s create a function to make it easier to query the database. 
+@pytest.mark.app_execute_sql Let’s create a function to make it easier to query the database. 
 
-Below the `get_db` function in `app.py` create a function called `query_db`.
+Below the `open_connection` function in `app.py` create a function called `execute_sql`.
 
-In the body of `query_db` create a variable called `db`. Assign this variable the return value of a call to the newly created `get_db` function.
+In the body of `execute_sql` create a variable called `db`. Assign this variable the return value of a call to the newly created `open_connection` function.
 
 ## 3.8 - Query Database Function Parameters
 
-@pytest.mark.app_query_db_parameters Still working with the `query_db` function:
+@pytest.mark.app_execute_sql_parameters Still working with the `execute_sql` function:
 
-- Add three parameters: `query`, `args`, and `one`.
-- Set the default of `args` to an empty tuple `()`.
-- Set the default of `one` to `False`.
+- Add four parameters: `sql`, `values`, `commit`, and `single`.
+- Set the default of `values` to an empty tuple `()`.
+- Set the default of `commit` to `False`.
+- Set the default of `single` to `False`.
 
 ## 3.9 - Query Database Function Execute
-@pytest.mark.app_query_db_execute In the body of `query_db` call the `execute` function on `db`, pass in the `query` and `args` variables. Assign the return value to a variable called `cursor`.
+@pytest.mark.app_execute_sql_execute In the body of `execute_sql` call the `execute` function on `connection`, pass in the `sql` and `values` variables. Assign the return value to a variable called `cursor`.
 
-## 3.10 - Query Database Function Fetchall
-@pytest.mark.app_query_db_fetchall In the body of `query_db`:
+## 3.10 - Query Database Function Commit
+@pytest.mark.app_execute_sql_commit In the body of `execute_sql`:
 
-- `fetchall` data from the `cursor` and assign it to a variable called `results`.
-- Close the `cursor` with the `close` function. 
+- Create an `if` statement to test if `commit` is `True`.
+- If `commit` is `True`, assign the variable `results` the the return of the function `connection.commit()`.
+- Else set `results` to the ternary `if`: `cursor.fetchone() if single else cursor.fetchall()`.
+- Close the cursor.
+- Return `results` variable.
 
-## 3.11 - Query Database Function One Record
-@pytest.mark.app_query_db_one Next, in the function body of `query_db` add a test if `one` is `True`:
-
-- if true return a ternary if, `results[0] if results else None`.
-- else return all `results`.
-
-## 3.12 - Close the Connection
+## 3.11 - Close the Connection
 
 @pytest.mark.app_close_connection In order to make sure the database connection is closed when the `app_context` is torn down:
 
@@ -199,11 +197,11 @@ In the body of `query_db` create a variable called `db`. Assign this variable th
 
 In the function body:
 
-- Call `getattr` with three arguments `g`, `'_database'`, and `None` 
-- Assign the return value to a `db` variable. 
-- If `db` is not `None` `close` the `db`. 
+- Call `getattr` with three arguments `g`, `'_connection'`, and `None` 
+- Assign the return value to a `connection` variable. 
+- If `connection` is not `None` `close` the `connection`. 
 
-## 3.13 - Close the Connection Decorator
+## 3.12 - Close the Connection Decorator
 
 @pytest.mark.app_close_connection_decorator To ensure the `close_connection` function is called when the `app_context` is destroyed decorate it with `@app.teardown_appcontext`.
 
@@ -279,7 +277,7 @@ In `<p>` tag add the following:
 
 @pytest.mark.app_jobs_route_jobs In `app.py` locate the `jobs` function. 
 
-Above the `render_template` function, call the `query_db` function:
+Above the `render_template` function, call the `execute_sql` function:
 
 - Pass in the SQL statement: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id'`. 
 - Assign the results of the call to a variable called `jobs`. 
@@ -311,7 +309,7 @@ After the `extends` tag add a template `block` called `content`. In the block ca
 
 ## 5.3 - Job Route Decorator
 
-@pytest.mark.app_job_route_decorator We only need one job from the database, we will use the `query_db` function passing in a query with a where clause. In the where clause we will need a `job_id`. We are going to get this from the URL. 
+@pytest.mark.app_job_route_decorator We only need one job from the database, we will use the `execute_sql` function passing in a query with a where clause. In the where clause we will need a `job_id`. We are going to get this from the URL. 
 
 Still in `app.py`, add a route decorator with the URL path `/job/<job_id>` to the `job` function. 
 
@@ -321,12 +319,12 @@ Still in `app.py`, add a route decorator with the URL path `/job/<job_id>` to th
 
 ## 5.5 - Job Route Data
 
-@pytest.mark.app_job_route_data In the `job` function, above the `render_template` function, call the `query_db` function and assign the results of the call to a `job` variable. 
-Pass these three arguments to `query_db`:
+@pytest.mark.app_job_route_data In the `job` function, above the `render_template` function, call the `execute_sql` function and assign the results of the call to a `job` variable. 
+Pass these three arguments to `execute_sql`:
 
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id WHERE job.id = ?'`
 - List Literal: [job_id]
-- True: This will bring back only one result.
+- single=True, This will bring back only one result.
 
 ## 5.6 - Job Route Pass Data
 
@@ -394,9 +392,9 @@ In the body return a call to the `render_template` function passing in the `empl
 
 ## 6.8 - Employer Route Employer Details
 
-@pytest.mark.app_employer_route_employers Still working with the `employer` function add `employer_id` to the parameter list so that we have access to this value. Above the `render_template` function make a call to `query_db` and assign the return value to `employer`. 
+@pytest.mark.app_employer_route_employers Still working with the `employer` function add `employer_id` to the parameter list so that we have access to this value. Above the `render_template` function make a call to `execute_sql` and assign the return value to `employer`. 
 
-Pass the following arguments to `query_db`:
+Pass the following arguments to `execute_sql`:
 
 - SQL Query: 'SELECT * FROM employer WHERE id=?'
 - List Literal: [employer_id]
@@ -406,7 +404,7 @@ In the `render_template` function, pass a keyword argument of `employer=employer
 
 ## 6.9 - Employer Route Employer Jobs
 
-@pytest.mark.app_employer_route_jobs On the employer details page, we want to display all of the employers' jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `query_db` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
+@pytest.mark.app_employer_route_jobs On the employer details page, we want to display all of the employers' jobs. In the `employer` function in `app.py` below the `employer` variable, add a call to the `execute_sql` function and assign the results to a variable called `jobs`.  Pass the function two arguments: 
 
 - SQL Query: `'SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?'`
 - List Literal: [employer_id]
@@ -415,7 +413,7 @@ In the `render_template` function, add another keyword argument of `jobs=jobs`
 
 ## 6.10 - Employer Route Employer Review
 
-@pytest.mark.app_employer_route_reviews Still in the `employer` function in `app.py` below the jobs query add a new query to get all review for the employer. Make a call to `query_db` and assign the return value to `reviews`. Pass in the arguments:
+@pytest.mark.app_employer_route_reviews Still in the `employer` function in `app.py` below the jobs query add a new query to get all review for the employer. Make a call to `execute_sql` and assign the return value to `reviews`. Pass in the arguments:
 
 - SQL Query: 'SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?'
 - List Literal: [employer_id]
@@ -459,7 +457,7 @@ In the body of the function return the `render_template` function passing in the
 
 @pytest.mark.app_review_insert_review Still in the `review` function below the variables in the `if` statement, connect to the database, insert the form values, and commit the changes. Follow these steps:
 
-- Assign a `db` variable to a call to `get_db()`
+- Assign a `db` variable to a call to `open_connection()`
 - `execute` the following SQL statement on `db`: `'INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?)'` passing the values: `(review, rating, title, date, status, employer_id)`
 - `commit` the changes to the database.
 - Return a redirect taking the user back to the employer page. **Hint: use `redirect()` and `url_for()` (pass a keyword argument of `employer_id=employer_id`) both of which need to be imported from flask.**

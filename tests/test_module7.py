@@ -74,14 +74,12 @@ def test_app_review_post_request_check_module7():
 @pytest.mark.app_review_insert_review
 def test_app_review_insert_review_module7():
     assert 'review' in dir(app), 'Have you created the `review` function?'
-    assert 'get_db' in get_functions(app.review), '`get_db` has not been called or has the wrong parameters.'
-    execute = "excute:INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?):[{'id': 'review'}, {'id': 'rating'}, {'id': 'title'}, {'id': 'date'}, {'id': 'status'}, {'id': 'employer_id'}]"
-    assert execute in get_functions(app.review), '`db.execute` has not been called or has the wrong parameters.'
-    assert 'commit' in get_functions(app.review), '`db.commit` has not been called or has the wrong parameters.'
+
+    execute_sql = "execute_sql:INSERT INTO review (review, rating, title, date, status, employer_id) VALUES (?, ?, ?, ?, ?, ?):[{'id': 'review'}, {'id': 'rating'}, {'id': 'title'}, {'id': 'date'}, {'id': 'status'}, {'id': 'employer_id'}]:commit:True"
+    assert execute_sql in get_functions(app.review), '`execute_sql` has not been called or has the wrong parameters.'
     assert 'redirect' in dir(app), '`redirect` has not been imported from flask.'
     assert 'url_for' in dir(app), '`url_for` has not been imported from flask.'
     assert 'redirect:employer:url_for:employer_id:employer_id' in get_functions(app.review), 'In the `if` are you redirect back to the employer page?'
-
 
 @pytest.mark.employer_review_button
 def test_employer_review_button_module7():

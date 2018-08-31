@@ -53,23 +53,23 @@ def test_app_employer_route_module6():
 def test_app_employer_route_employers_module6():
     assert 'employer' in dir(app), 'Have you created the `employer` function?'
     assert 'employer_id' in inspect.getfullargspec(app.employer).args, 'Have you added the correct parameters to the `employer` function parameter list?'
-    query_db = 'query_db:SELECT * FROM employer WHERE id=?:employer_id:True'
-    assert query_db in get_functions(app.employer), '`query_db` has not been called or has the wrong parameters.'
+    execute_sql = 'execute_sql:SELECT * FROM employer WHERE id=?:employer_id:single:True'
+    assert execute_sql in get_functions(app.employer), '`execute_sql` has not been called or has the wrong parameters.'
     result = [item for item in get_functions(app.employer) if item.startswith('render_template:employer.html:employer:employer')]
     assert len(result) == 1, 'Have you added `employer` to the `render_template` call.'
 
 @pytest.mark.app_employer_route_jobs
 def test_app_employer_route_jobs_module6():
     assert 'employer' in dir(app), 'Have you created the `employer` function?'
-    query_db = 'query_db:SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?:employer_id'
-    assert query_db in get_functions(app.employer), '`query_db` has not been called or has the wrong parameters.'
+    execute_sql = 'execute_sql:SELECT job.id, job.title, job.description, job.salary FROM job JOIN employer ON employer.id = job.employer_id WHERE employer.id = ?:employer_id'
+    assert execute_sql in get_functions(app.employer), '`execute_sql` has not been called or has the wrong parameters.'
     result = [item for item in get_functions(app.employer) if item.startswith('render_template:employer.html:employer:employer:jobs:jobs')]
     assert len(result) == 1, 'Have you added `jobs` to the `render_template` call.'
 
 @pytest.mark.app_employer_route_reviews
 def test_app_employer_route_reviews_module6():
     assert 'employer' in dir(app), 'Have you created the `employer` function?'
-    query_db = 'query_db:SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?:employer_id'
-    assert query_db in get_functions(app.employer), '`query_db` has not been called or has the wrong parameters.'
+    execute_sql = 'execute_sql:SELECT review, rating, title, date, status FROM review JOIN employer ON employer.id = review.employer_id WHERE employer.id = ?:employer_id'
+    assert execute_sql in get_functions(app.employer), '`execute_sql` has not been called or has the wrong parameters.'
     result = [item for item in get_functions(app.employer) if item.startswith('render_template:employer.html:employer:employer:jobs:jobs:reviews:reviews')]
     assert len(result) == 1, 'Have you added `reviews` to the `render_template` call.'

@@ -5,7 +5,7 @@ import json
 from jobs import app
 from .utils import *
 
-@pytest.mark.review_template
+@pytest.mark.test_review_template_module7
 def test_review_template_module7():
     assert template_exists('review'), 'The `review.html` template does not exist in the `templates` folder.'
     el = template_data('review').select('.field.is-grouped .control .button.is-text')
@@ -13,7 +13,7 @@ def test_review_template_module7():
     assert 'layout.html' in template_extends('review'), 'The `review.html` template does not extend `layout.html`.'
     assert 'employer:employer_id:employer_id' in template_functions('review', 'url_for'), 'Have you called the `url_for` function in the `review.html` file?'
 
-@pytest.mark.app_review_route
+@pytest.mark.test_app_review_route_module7
 def test_app_review_route_module7():
     assert 'review' in dir(app), 'Have you created the `review` function?'
     assert 'employer_id' in inspect.getfullargspec(app.review).args, 'Have you added the correct parameters to the `review` function parameter list?'
@@ -21,7 +21,7 @@ def test_app_review_route_module7():
     result = [item for item in get_functions(app.review) if item.startswith('render_template:review.html:employer_id:employer_id')]
     assert len(result) == 1, 'Have you called the `render_template` function with the correct arguments.'
 
-@pytest.mark.app_review_post_request_check
+@pytest.mark.test_app_review_post_request_check_module7
 def test_app_review_post_request_check_module7():
     assert 'review' in dir(app), 'Have you created the `review` function?'
     assert 'datetime' in dir(app), '`datetime` has not been imported.'
@@ -71,7 +71,7 @@ def test_app_review_post_request_check_module7():
     assert status in body, 'Have you created the `status` variable?'
     assert date in body, 'Have you created the `date` variable?'
 
-@pytest.mark.app_review_insert_review
+@pytest.mark.test_app_review_insert_review_module7
 def test_app_review_insert_review_module7():
     assert 'review' in dir(app), 'Have you created the `review` function?'
 
@@ -81,7 +81,7 @@ def test_app_review_insert_review_module7():
     assert 'url_for' in dir(app), '`url_for` has not been imported from flask.'
     assert 'redirect:employer:url_for:employer_id:employer_id' in get_functions(app.review), 'In the `if` are you redirect back to the employer page?'
 
-@pytest.mark.employer_review_button
+@pytest.mark.test_employer_review_button_module7
 def test_employer_review_button_module7():
     assert template_exists('employer'), 'The `employer.html` template does not exist in the `templates` folder.'
     assert 'review:employer_id:employer:id' in template_functions('employer', 'url_for'), 'In the `if` are you redirect back to the employer page?'

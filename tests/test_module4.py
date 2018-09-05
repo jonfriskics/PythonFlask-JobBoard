@@ -4,16 +4,16 @@ import sys
 from jobs import app
 from .utils import *
 
-@pytest.mark.template_macros
+@pytest.mark.test_template_macros_module4
 def test_template_macros_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
 
-@pytest.mark.show_job_macro_definition
+@pytest.mark.test_show_job_macro_definition_module4
 def test_show_job_macro_definition_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'show_job:job' in template_macros('_macros'), 'Have you created the `show_job` macro and added the correct parameter?'
 
-@pytest.mark.show_job_macro_html
+@pytest.mark.test_show_job_macro_html_module4
 def test_show_job_macro_html_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     html = template_macro_soup('_macros', 'show_job')
@@ -21,13 +21,13 @@ def test_show_job_macro_html_module4():
     div = html.select('.card-content .content')
     assert len(p) == 1 and len(div) == 1, 'Has the `HTML` from `templates.html` been copied to the `show_job` macro?'
 
-@pytest.mark.show_job_macro_header
+@pytest.mark.test_show_job_macro_header_module4
 def test_show_job_macro_header_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'job:job_id:job:id' in template_functions('_macros', 'url_for'), 'Looks like the job title link `href` is incorrect.'
     assert 'job:title' in template_variables('_macros'), 'Looks like the job title link does not have content.'
 
-@pytest.mark.show_job_macro_body
+@pytest.mark.test_show_job_macro_body_module4
 def test_show_job_macro_body_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'employer:employer_id:job:employer_id' in template_functions('_macros', 'url_for'), 'Looks like the job title link `href` is incorrect.'
@@ -35,12 +35,12 @@ def test_show_job_macro_body_module4():
     assert 'job:salary' in template_variables('_macros'), 'Are you showing the job salary?'
     assert 'job:description' in template_variables('_macros'), 'Are you showing the job description?'
 
-@pytest.mark.show_jobs_macro_definition
+@pytest.mark.test_show_jobs_macro_definition_module4
 def test_show_jobs_macro_definition_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert 'show_jobs:jobs' in template_macros('_macros'), 'Have you created the `show_jobs` macro and added the correct parameter?'
 
-@pytest.mark.show_jobs_macro_for_loop
+@pytest.mark.test_show_jobs_macro_for_loop_module4
 def test_show_jobs_macro_for_loop_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     html = template_macro_soup('_macros', 'show_jobs')
@@ -48,7 +48,7 @@ def test_show_jobs_macro_for_loop_module4():
     assert len(div) == 1, 'Has a `<div>` with classes of `columns` and `is-multiline` been added to the `show_jobs` macro?'
     assert 'job:jobs' in show_jobs_for(), 'Does the `show_jobs` macro contain a `for` loop?'
 
-@pytest.mark.show_jobs_macro_for_loop_body
+@pytest.mark.test_show_jobs_macro_for_loop_body_module4
 def test_show_jobs_macro_for_loop_body_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     html = template_macro_soup('_macros', 'show_jobs')
@@ -56,23 +56,23 @@ def test_show_jobs_macro_for_loop_body_module4():
     assert len(div) == 1, 'Has a `<div>` with classes of `column` and `is-half` been added to the `show_jobs` macro `for` loop body?'
     assert 'show_job:job' in show_jobs_for(), 'Does the `show_jobs` macro call `show_job`?'
 
-@pytest.mark.import_macros
+@pytest.mark.test_import_macros_module4
 def test_import_macros_module4():
     assert template_exists('_macros'), 'The `_macros.html` template does not exist in the `templates` folder.'
     assert '_macros.html:show_job:show_jobs:True' == template_import('layout'), 'Have you imported `_macros.html` in `layouts.html`?'
 
-@pytest.mark.index_template
+@pytest.mark.test_index_template_module4
 def test_index_template_module4():
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     el = template_data('index').select('.columns .column.is-one-fifth')
     assert len(el) == 1, 'Has the `HTML` from `templates.html` been copied to the `index.html` template?'
 
-@pytest.mark.display_all_jobs
+@pytest.mark.test_display_all_jobs_module4
 def test_display_all_jobs_module4():
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     assert 'show_jobs:jobs' in template_functions('index', 'show_jobs'), 'Have you call the `show_jobs` macro in the `index.html` file?'
 
-@pytest.mark.app_jobs_route_jobs
+@pytest.mark.test_app_jobs_route_jobs_module4
 def test_app_jobs_route_jobs_module4():
     assert 'jobs' in dir(app), 'Have you created the `jobs` function?'
     execute_sql = 'execute_sql:SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id' 

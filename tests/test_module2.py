@@ -5,21 +5,21 @@ from .utils import *
 
 calls = template_functions('layout', 'url_for')
 
-@pytest.mark.layout_template
+@pytest.mark.test_layout_template_module2
 def test_layout_template_module2():
     assert template_exists('layout'), 'The `layout.html` template does not exist in the `templates` folder.'
 
-@pytest.mark.add_bulma_css_framework
+@pytest.mark.test_add_bulma_css_framework_module2
 def test_add_bulma_css_framework_module2():
     assert template_exists('layout'), 'The `layout.html` template does not exist in the `templates` folder.'
     assert 'static:filename:css/bulma.min.css' in calls, 'Looks like `bulma.min.css` is not linked in `layout.html`.'
 
-@pytest.mark.add_custom_css
+@pytest.mark.test_add_custom_css_module2
 def test_add_custom_css_module2():
     assert template_exists('layout'), 'The `layout.html` template does not exist in the `templates` folder.'
     assert 'static:filename:css/app.css' in calls, 'Looks like `app.css` is not linked in `layout.html`.'
 
-@pytest.mark.add_fontawesome
+@pytest.mark.test_add_fontawesome_module2
 def test_add_fontawesome_module2():
     assert template_exists('layout'), 'The `layout.html` template does not exist in the `templates` folder.'
     attr = {
@@ -28,7 +28,7 @@ def test_add_fontawesome_module2():
     }
     assert template_soup('layout').find('link', attr), 'Looks like FontAwesome is not linked in `layout.html`.'
 
-@pytest.mark.extend_base_template
+@pytest.mark.test_extend_base_template_module2
 def test_extend_base_template_module2():
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     assert template_exists('layout'), 'The `layout.html` template does not exist in the `templates` folder.'

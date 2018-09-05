@@ -140,7 +140,7 @@ At this point you have a styled application. Check out the styles:
 
 ## 3.3 - Database Path
 
-@pytest.mark.app_db_path below all of the import statements, create a constant called `PATH`, that contains the path to the already created database stored in `db/jobs.sqlite`.
+@pytest.mark.app_db_path Below all of the import statements, create a constant called `PATH`, that contains the path to the already created database stored in `db/jobs.sqlite`.
 
 ## 3.4 - Global Database Attribute
 
@@ -177,9 +177,11 @@ In the body of `execute_sql` create a variable called `db`. Assign this variable
 - Set the default of `single` to `False`.
 
 ## 3.9 - Query Database Function Execute
+
 @pytest.mark.app_execute_sql_execute In the body of `execute_sql` call the `execute` function on `connection`, pass in the `sql` and `values` variables. Assign the return value to a variable called `cursor`.
 
 ## 3.10 - Query Database Function Commit
+
 @pytest.mark.app_execute_sql_commit In the body of `execute_sql`:
 
 - Create an `if` statement to test if `commit` is `True`.
@@ -252,7 +254,7 @@ In `<p>` tag add the following:
 ## 4.8 - Show Jobs Macro For Loop Body
 
 @pytest.mark.show_jobs_macro_for_loop_body In the body of the `for` loop add a `<div>` with two classes `column` and `is_half`.
-  
+
 - In this `column` `<div>` add a call to the `show_job` macro passing in an individual `job` from the `for` loop.
 
 ## 4.9 - Import Macros
@@ -261,7 +263,7 @@ In `<p>` tag add the following:
 
 ```
 {% from '_macros.html' import show_job, show_jobs with context %}
-``` 
+```
 
 **Notes: Because each template extends `layouts.html` all of them will have access to these two new macros.**
 
@@ -284,7 +286,7 @@ Above the `render_template` function, call the `execute_sql` function:
 - In the `render_template` function, pass a keyword argument of `jobs=jobs`.
 
 **Preview**
-    
+
 At this point you can see all jobs on the homepage:
 
 - Open a terminal at the root of the project
@@ -302,7 +304,7 @@ At this point you can see all jobs on the homepage:
 In the file use an `extends` template tag to inherit `layout.html`. 
 
 After the `extends` tag add a template `block` called `content`. In the block call the `show_job` macro passing in `job`. **Note: Use the `{{}}` for the macro call.**
- 
+
 ## 5.2 - Job Route Function
 
 @pytest.mark.app_job_route In `app.py` create a function called `job`. In the body return a call to the `render_template` function passing in the newly created `job.html` template.
@@ -315,7 +317,7 @@ Still in `app.py`, add a route decorator with the URL path `/job/<job_id>` to th
 
 ## 5.4 - Job Route Parameter
 
-@pytest.mark.app_job_route_parameter. To use the `job_id`, received from the URL, we need to pass it to the `job` function. Add `job_id` to the parameter list of the `job` function. 
+@pytest.mark.app_job_route_parameter To use the `job_id`, received from the URL, we need to pass it to the `job` function. Add `job_id` to the parameter list of the `job` function. 
 
 ## 5.5 - Job Route Data
 

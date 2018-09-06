@@ -16,12 +16,9 @@ def test_app_create_flask_app_module1():
     assert 'app' in dir(app), 'Have you created an instance of the `Flask` class called `app`?'
     assert isinstance(app.app, app.Flask), '`app` is not an instance of the `Flask` class.'
 
-@pytest.mark.test_templates_folder_module1
-def test_templates_folder_module1():
-    assert os.path.isdir('jobs/templates'), 'The `templates` folder has not been created.'
-
 @pytest.mark.test_index_template_module1
 def test_index_template_module1():
+    assert os.path.isdir('jobs/templates'), 'The `templates` folder has not been created.'
     assert template_exists('index'), 'The `index.html` template does not exist in the `templates` folder.'
     assert template_find('index', 'h1', limit=1), "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."
     assert template_find('index', 'h1', limit=1)[0].text == 'Jobs', "The `<h1>` in the `index.html` template does not contain the contents 'Jobs'."

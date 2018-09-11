@@ -13,7 +13,8 @@ def open_connection():
     return connection
 
 def execute_sql(sql, values = (), commit = False, single = False):
-    db = open_connection()
+    connection = open_connection()
+    cursor = connection.execute(sql, values)
 
 @app.route('/')
 @app.route('/jobs')

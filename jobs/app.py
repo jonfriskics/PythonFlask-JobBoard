@@ -44,4 +44,5 @@ def job(job_id):
 
 @app.route('/employer/<employer_id>')
 def employer():
+    employer = execute_sql('SELECT * FROM employer WHERE id=?', employer_id, True)
     return render_template('employer.html')

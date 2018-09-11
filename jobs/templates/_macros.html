@@ -7,9 +7,12 @@
     </header>
     <div class="card-content">
       <div class="content">
-        <p><a href="{{ url_for('employer', employer_id=job['employer_id']) }}">{{ job['employer_name'] }}</a></p>
-        ${{ job'salary' }}
-        {{ job'description' }}
+        <p><a href="{{ url_for('employer', employer_id=job['employer_id']) }}">{{ job['employer_name'] }}</a>
+          <br />
+          ${{ job'salary' }}
+          <br />
+          {{ job'description' }}
+        </p>        
       </div>
     </div>
   </div>

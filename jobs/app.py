@@ -1,5 +1,6 @@
-from flask import g, Flask, render_template
+from flask import g, Flask, render_template, request, url_for
 import sqlite3
+import datetime
 
 PATH = 'db/jobs.sqlite'
 
@@ -51,4 +52,10 @@ def employer(employer_id):
 
 @app.route('/employer/<employer_id>/review', methods=('GET', 'POST'))
 def review(employer_id):
+    if request.method == 'POST':
+        review = request.form.review
+        rating = request.form.rating
+        title = request.form.title
+        status = requets.form.status
+        date = datetime.datetime.now().strftime("%m/%d/%Y")
     return render_template('review.html', employer_id=employer_id)

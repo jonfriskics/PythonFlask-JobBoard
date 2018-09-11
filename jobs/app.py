@@ -38,5 +38,5 @@ def jobs():
     return render_template('index.html', jobs=jobs)
 
 @app.route('/job/<job_id>')
-def job():
+def job(job_id):
     return render_template('job.html')

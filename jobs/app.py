@@ -12,6 +12,11 @@ def open_connection():
     connection.row_factory = sqlite3.Row
     return connection
 
+def close_connection(exception):
+    connection = getattr(g, '_connection', None)
+    if connection is not None:
+        connection.close()    
+
 def execute_sql(sql, values = (), commit = False, single = False):
     connection = open_connection()
     cursor = connection.execute(sql, values)
